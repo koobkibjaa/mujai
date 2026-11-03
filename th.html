@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>มูใจ — ดูดวงหลายศาสตร์ + ทำบุญในที่เดียว (เดโม)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chonburi&family=Bai+Jamjuree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3EEF8; --surface:#FFFFFF; --ink:#211A44; --muted:#625A86;
+  --line:#DCD3EC; --marigold:#E39A1F; --marigold-ink:#3A2300; --lotus:#C8456F;
+  --night:#241D52; --card-back:#2D2466; --gold:#E7B24C; --ok:#2E7D5B;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15122B; --surface:#201B3F; --ink:#F1ECFF; --muted:#B3AAD6;
+    --line:#352E61; --marigold:#F0AE3C; --marigold-ink:#2A1800; --lotus:#F07CA0;
+    --night:#0F0C22; --card-back:#2D2466; --gold:#F0C064; --ok:#6CCB9F;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15122B; --surface:#201B3F; --ink:#F1ECFF; --muted:#B3AAD6;
+  --line:#352E61; --marigold:#F0AE3C; --marigold-ink:#2A1800; --lotus:#F07CA0;
+  --night:#0F0C22; --card-back:#2D2466; --gold:#F0C064; --ok:#6CCB9F;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px)}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Bai Jamjuree","Leelawadee UI","Thonburi",system-ui,sans-serif;
+  font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Chonburi","Bai Jamjuree",serif;font-weight:400;line-height:1.3;margin:0}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--marigold);outline-offset:2px}
+.wrap{max-width:640px;margin:0 auto;padding:0 18px}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{font-family:"Chonburi",serif;font-size:24px;color:var(--ink);display:flex;align-items:center;gap:8px}
+.logo i{display:inline-block;width:12px;height:12px;border-radius:50%;background:var(--marigold);box-shadow:0 0 0 4px color-mix(in srgb,var(--marigold) 30%,transparent)}
+.plan-pill{border:1.5px solid var(--line);border-radius:999px;padding:5px 14px;background:var(--surface);cursor:pointer;font-weight:600;font-size:15px}
+.plan-pill.pro{background:var(--marigold);color:var(--marigold-ink);border-color:var(--marigold)}
+
+/* hero: the night sky */
+.hero{background:var(--night);color:#F4EEFF;padding:36px 0 30px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(1.5px 1.5px at 12% 22%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 78% 18%,#fff9 50%,transparent 51%),
+  radial-gradient(1.5px 1.5px at 62% 70%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 30% 82%,#fff7 50%,transparent 51%),
+  radial-gradient(1px 1px at 90% 55%,#fff8 50%,transparent 51%),radial-gradient(1.5px 1.5px at 45% 35%,#fff5 50%,transparent 51%)}
+.hero .wrap{position:relative}
+.hero h1{font-size:clamp(30px,8vw,44px)}
+.hero p{color:#CFC6F0;margin:10px 0 0;max-width:34em}
+.greet{color:var(--gold);font-weight:600;margin-bottom:6px}
+
+/* daily card */
+.daily{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;margin-top:26px}
+@media (max-width:420px){.daily{grid-template-columns:1fr;justify-items:center;text-align:center}}
+.daily-text h2{font-size:20px;color:#fff}
+.daily-text .m{color:#D9D0F7;margin-top:6px}
+.daily-text .tip{margin-top:10px;font-size:15px;color:var(--gold)}
+
+/* tarot card */
+.card{width:120px;height:196px;perspective:900px;cursor:pointer;flex:none;background:none;border:0;padding:0}
+.card.sm{width:96px;height:156px}
+.card-inner{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.flipped .card-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.back{background:var(--card-back);border:2px solid var(--gold);
+  background-image:repeating-linear-gradient(45deg,transparent 0 9px,#E7B24C22 9px 10px),repeating-linear-gradient(-45deg,transparent 0 9px,#E7B24C22 9px 10px);
+  display:grid;place-items:center}
+.back::after{content:"";width:46%;aspect-ratio:1;border:2px solid var(--gold);border-radius:50%;box-shadow:inset 0 0 0 6px var(--card-back),inset 0 0 0 7px var(--gold)}
+.front{transform:rotateY(180deg);background:#FBF6EA;color:#2A2152;border:2px solid var(--gold);
+  display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:10px 6px;text-align:center}
+.front .num{font-family:"Chonburi",serif;font-size:14px;color:#9A6A12}
+.front .sym{font-size:44px;line-height:1}
+.card.sm .front .sym{font-size:34px}
+.front .nm{font-size:13px;font-weight:700;line-height:1.25}
+.front.rev .sym{transform:rotate(180deg)}
+.hint{font-size:13px;color:#BDB3E6;margin-top:6px;text-align:center}
+@media (prefers-reduced-motion:reduce){.card-inner{transition:none}}
+
+section.block{padding:30px 0;border-bottom:1px solid var(--line)}
+.block h2{font-size:24px}
+.sub{color:var(--muted);margin:4px 0 16px}
+
+/* profile */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.grid2{grid-template-columns:1fr}}
+label.f{display:flex;flex-direction:column;gap:4px;font-weight:600;font-size:15px}
+input,select,textarea{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-weight:400;min-width:0;width:100%}
+textarea{resize:vertical;min-height:96px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:15px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.persona{margin-top:14px;padding:12px 14px;border-left:4px solid var(--lotus);background:var(--surface);border-radius:0 10px 10px 0;font-size:15px}
+
+/* method selector */
+.methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.method{border:1.5px solid var(--line);background:var(--surface);border-radius:14px;padding:12px 10px;text-align:left;cursor:pointer;position:relative}
+.method b{display:block;font-size:16px}
+.method span{font-size:13px;color:var(--muted);display:block;line-height:1.4}
+.method[aria-pressed="true"]{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.lock{position:absolute;top:8px;right:10px;font-size:12px;font-weight:700;color:var(--lotus)}
+.seg{display:flex;border:1.5px solid var(--line);border-radius:12px;overflow:hidden;margin:14px 0}
+.seg button{flex:1;border:0;background:var(--surface);padding:9px 4px;cursor:pointer;font-size:15px;position:relative}
+.seg button+button{border-left:1.5px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);font-weight:600}
+.examples{margin:10px 0 4px}
+.examples p{font-size:14px;color:var(--muted);margin:0 0 6px}
+.ex{display:block;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px dashed var(--line);padding:8px 2px;cursor:pointer;font-size:15px;color:var(--ink)}
+.ex::before{content:"“";color:var(--marigold);font-family:"Chonburi",serif;margin-right:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 22px;font-weight:700;cursor:pointer;font-size:17px}
+.btn.primary{background:var(--marigold);color:var(--marigold-ink);width:100%;margin-top:14px}
+.btn.ghost{background:transparent;border:1.5px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+
+/* spread */
+.spread{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:22px 0 8px}
+.spread .pos{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.reading{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;white-space:pre-wrap}
+.reading h3{font-size:18px;margin-bottom:6px}
+.disc{font-size:13px;color:var(--muted);margin-top:10px}
+
+/* merit */
+.merit{background:linear-gradient(var(--surface),var(--surface)) padding-box;border:1.5px solid var(--marigold);border-radius:18px;padding:18px;margin-top:18px}
+.merit h3{font-size:20px}
+.fdn-list{display:grid;gap:10px;margin-top:12px}
+.fdn{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer;background:var(--bg);text-align:left;width:100%}
+.fdn[aria-pressed="true"]{border-color:var(--ok);box-shadow:0 0 0 2px var(--ok) inset}
+.fdn .ic{font-size:26px}
+.fdn b{display:block;font-size:15px}
+.fdn span{font-size:13px;color:var(--muted)}
+.qrbox{display:none;margin-top:14px;text-align:center}
+.qrbox.show{display:block}
+.qrbox svg{width:180px;height:180px;background:#fff;padding:10px;border-radius:12px}
+.amounts{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.amt-list{display:grid;gap:8px;margin-top:12px}
+.amt{display:flex;gap:12px;align-items:center;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);cursor:pointer;width:100%;text-align:left}
+.amt b{font-size:18px;min-width:58px}
+.amt span{font-size:14px;color:var(--muted);line-height:1.45}
+.amt[aria-pressed="true"]{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.custom{display:flex;align-items:center;gap:8px;margin-top:10px;font-weight:600;font-size:15px}
+.custom input{flex:1}
+.impact{font-size:14px;color:var(--ok);min-height:22px;margin:6px 0 14px;text-align:left}
+.blessing{display:none;text-align:center;margin-top:16px}
+.blessing.show{display:block}
+.lotus{width:170px;height:124px;display:block;margin:0 auto}
+.petal{transform-box:fill-box;transform-origin:50% 100%;animation:bloom 1.5s cubic-bezier(.3,.7,.2,1) both}
+@keyframes bloom{from{transform:scale(.25,.1);opacity:0}to{transform:none;opacity:1}}
+.glow{animation:glow 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes glow{0%,100%{opacity:.35;transform:scale(.9)}50%{opacity:.7;transform:scale(1.08)}}
+.bless-title{font-family:"Chonburi",serif;font-size:28px;color:var(--marigold);margin-top:4px}
+.bless-impact{font-size:17px;margin:6px 0 2px}
+.wish-chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:12px 0 8px}
+.wish-chips .chip{font-size:14px;padding:5px 12px}
+.cert{margin-top:16px;border:2px solid var(--gold);border-radius:14px;padding:20px 16px;background:var(--paper);color:var(--sk);box-shadow:inset 0 0 0 5px var(--paper),inset 0 0 0 6.5px var(--gold);text-align:center}
+.cert h4{font-family:"Chonburi",serif;font-weight:400;font-size:21px;margin:0 0 4px}
+.cert .big{font-size:30px;font-weight:700;color:#8A5A0A;line-height:1.2}
+.cert p{margin:4px 0;font-size:15px}
+.cert .wish{font-style:italic;margin-top:10px;min-height:1em}
+.mlevel{margin-top:16px;text-align:left;font-size:15px}
+.meter{height:10px;background:var(--line);border-radius:99px;overflow:hidden;margin:6px 0 4px}
+.meter i{display:block;height:100%;width:0;background:var(--marigold);transition:width 1.2s ease}
+.follow{font-size:14px;color:var(--muted);margin-top:12px;text-align:left;border-left:3px solid var(--ok);padding-left:10px}
+@media (prefers-reduced-motion:reduce){.petal,.glow{animation:none}}
+
+/* ad */
+.ad{margin:18px 0 0;border:1.5px dashed var(--muted);border-radius:12px;padding:12px 14px;font-size:14px;color:var(--muted);display:flex;justify-content:space-between;gap:10px;align-items:center}
+.ad b{color:var(--ink)}
+body.pro .ad{display:none}
+
+/* business */
+.revenue{display:grid;gap:12px}
+.revenue div{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px}
+.revenue b{font-size:17px}
+.revenue p{margin:4px 0 0;font-size:15px;color:var(--muted)}
+footer{padding:26px 0 40px;font-size:13px;color:var(--muted);text-align:center}
+
+/* modal */
+dialog{border:0;border-radius:20px;padding:0;max-width:420px;width:calc(100% - 32px);background:var(--surface);color:var(--ink)}
+dialog::backdrop{background:#0008}
+.mbody{padding:22px}
+.plans{display:grid;gap:10px;margin:14px 0}
+.plan{border:1.5px solid var(--line);border-radius:12px;padding:12px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--bg);width:100%;text-align:left}
+.plan[aria-pressed="true"]{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.plan b{font-size:16px}
+.plan span{font-size:13px;color:var(--muted)}
+.perks{margin:0;padding-left:20px;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:999px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:50}
+.toast.show{opacity:1}
+
+/* ---- sketch deck: shuffle + fan ---- */
+:root{--paper:#FBF8F0;--sk:#2A2152}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--paper:#EDE6D6}}
+:root[data-theme="dark"]{--paper:#EDE6D6}
+.back{background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%232A2152' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath d='M50 10 L50.6 90'/%3E%3Cpath d='M12 49.5 L88 51'/%3E%3Cpath d='M23 23 L77 78'/%3E%3Cpath d='M78 22 L22 77'/%3E%3Cpath d='M37 14 L63 86'/%3E%3Cpath d='M64 14 L36 85'/%3E%3C/g%3E%3C/svg%3E") center/66% no-repeat;
+  border:1.6px solid var(--sk);box-shadow:1.5px 2px 0 -.5px var(--paper),1.5px 2px 0 .7px var(--sk)}
+.back::after{content:none}
+.front{background:var(--paper);color:var(--sk);border:1.6px solid var(--sk);box-shadow:1.5px 2px 0 -.5px var(--paper),1.5px 2px 0 .7px var(--sk)}
+.front .num{color:#8A5A0A}
+.steps{display:flex;gap:8px;list-style:none;padding:0;margin:20px 0 12px;counter-reset:s}
+.steps li{flex:1;text-align:center;font-size:14px;color:var(--muted);border-bottom:3px solid var(--line);padding-bottom:4px;counter-increment:s}
+.steps li::before{content:counter(s) ". "}
+.steps li.on{color:var(--ink);font-weight:700;border-color:var(--marigold)}
+.steps li.done{color:var(--ink);border-color:var(--ink)}
+.table{background:var(--paper);color:var(--sk);border-radius:20px;padding:20px 10px 16px;overflow:hidden;position:relative}
+.slots{display:flex;justify-content:center;gap:12px}
+.slot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.slot span{font-family:"Chonburi",serif;font-size:14px}
+.slot-hole{width:96px;height:156px;border:1.6px dashed #2A215266;border-radius:12px}
+.slot-hole:has(.card){border-color:transparent}
+@media (max-width:360px){.slot-hole,.card.sm{width:84px;height:136px}}
+.pile{text-align:center}
+.stack{position:relative;width:104px;height:168px;margin:26px auto 6px;display:block;background:none;border:0;padding:0;cursor:pointer}
+.stk{position:absolute;inset:0;transform:translateY(calc(var(--i) * -2px))}
+.stk .face{position:absolute;inset:0;border-radius:12px}
+.stk .dot{position:absolute;left:50%;top:50%;width:26px;height:26px;margin:-13px;border-radius:50%;background:var(--marigold);border:1.6px solid var(--sk);z-index:2}
+.stack.rf .stk:nth-child(odd){animation:rfL .62s cubic-bezier(.4,.1,.3,1) both;animation-delay:calc(var(--i) * 25ms)}
+.stack.rf .stk:nth-child(even){animation:rfR .62s cubic-bezier(.4,.1,.3,1) both;animation-delay:calc(var(--i) * 25ms)}
+@keyframes rfL{0%,100%{transform:translate(0,calc(var(--i) * -2px)) rotate(0)}45%{transform:translate(-62px,calc(var(--i) * -3px)) rotate(-9deg)}}
+@keyframes rfR{0%,100%{transform:translate(0,calc(var(--i) * -2px)) rotate(0)}45%{transform:translate(62px,calc(var(--i) * -3px)) rotate(9deg)}}
+.stack:not(.rf):hover .stk:last-child{transform:translateY(-16px)}
+.sketch-btn:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
+.shuf-count{font-size:14px;min-height:22px;color:#4A4270}
+.sketch-btn{background:var(--paper);color:var(--sk);border:1.6px solid var(--sk);border-radius:12px;padding:9px 22px;font-weight:700;cursor:pointer;box-shadow:2px 2px 0 var(--sk);margin-top:4px}
+.sketch-btn:active{transform:translate(2px,2px);box-shadow:none}
+.fan{position:relative;margin-top:14px;transition:opacity .3s}
+.fan.gone{opacity:0}
+.fan-card{position:absolute;left:calc(50% - 32px);top:24px;width:64px;height:104px;padding:0;border:0;background:none;cursor:pointer;
+  transform-origin:50% 420px;transform:rotate(0deg);transition:transform .5s cubic-bezier(.3,.7,.2,1),opacity .15s}
+.fan-card .face{position:absolute;inset:0;border-radius:8px}
+.fan.open .fan-card{transform:rotate(var(--a));transition-delay:var(--d)}
+@media (hover:hover){.fan.open .fan-card:hover{transform:rotate(var(--a)) translateY(-20px);transition-delay:0s}}
+.fan.open .fan-card:focus-visible{transform:rotate(var(--a)) translateY(-20px);transition-delay:0s}
+.fan-card.picked{opacity:0;pointer-events:none}
+.fly{position:fixed;width:64px;height:104px;z-index:40;pointer-events:none}
+.fly .face{position:absolute;inset:0;border-radius:8px}
+.table-hint{text-align:center;font-size:15px;color:#4A4270;margin:12px 6px 0}
+.table-hint b{color:var(--sk)}
+#againBtn{width:100%;margin-top:14px}
+@media (prefers-reduced-motion:reduce){.stack.rf .stk{animation:none!important}.fan-card{transition:none}}
+
+.view[hidden]{display:none}
+.view{padding-bottom:96px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:color-mix(in srgb,var(--surface) 94%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs-in{display:flex;max-width:640px;margin:0 auto}
+.tab{flex:1;background:none;border:0;padding:8px 2px 7px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:var(--muted);cursor:pointer;position:relative}
+.tab svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:1.7}
+.tab[aria-current="page"]{color:var(--ink);font-weight:700}
+.tab[aria-current="page"] svg{stroke:var(--marigold);stroke-width:2}
+.tab[aria-current="page"]::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--marigold)}
+.tiles{display:grid;gap:10px;margin:22px 0 4px}
+.tile{display:grid;grid-template-columns:1fr auto;align-items:center;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;cursor:pointer}
+.tile b{font-family:"Chonburi",serif;font-weight:400;font-size:19px}
+.tile span{grid-column:1;font-size:14px;color:var(--muted)}
+.tile i{grid-row:1/3;grid-column:2;font-style:normal;font-size:22px;color:var(--marigold)}
+.mstat{margin-top:18px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;font-size:15px}
+.perks{margin:0 0 6px}
+
+.coin-pill{display:flex;align-items:center;gap:6px;border:1.5px solid var(--marigold);border-radius:999px;padding:4px 6px 4px 12px;background:var(--surface);cursor:pointer;font-size:16px}
+.coin-pill b{font-size:16px;min-width:1.5em;text-align:left}
+.coin-pill .plus{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--marigold);color:var(--marigold-ink);font-weight:700}
+.coin-pill.pop{animation:pop .5s ease}
+@keyframes pop{40%{transform:scale(1.15)}}
+.lbl{font-weight:600;font-size:15px;margin:16px 0 8px}
+.spreads{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.spread-opt{display:grid;grid-template-columns:1fr auto;gap:0 6px;text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 11px;cursor:pointer}
+.spread-opt b{font-size:16px}
+.spread-opt em{font-style:normal;font-size:13px;font-weight:700;color:var(--marigold)}
+.spread-opt span{grid-column:1/3;font-size:12.5px;color:var(--muted);line-height:1.35}
+.spread-opt[aria-pressed="true"]{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.fit-box{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--surface);border-left:4px solid var(--marigold)}
+.fit-box .fit-k{font-family:"Chonburi",serif;font-size:16px}
+.fit-box p{margin:4px 0 0;font-size:14.5px;color:var(--muted);line-height:1.55}
+.spread-fit{margin:10px 2px 0;font-size:14.5px;line-height:1.55}
+.chain-info{margin-top:14px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1.5px dashed var(--marigold);font-size:15px}
+.slots{flex-wrap:wrap;row-gap:12px}
+.slots.many{gap:6px}
+.slots.many .slot{width:60px}
+.slots.many .slot-hole,.slots.many .card.sm{width:58px;height:94px}
+.slots.many .slot span{font-size:11px;font-family:inherit;max-width:60px;text-align:center;line-height:1.2}
+.slots.many .front{padding:6px 2px}
+.slots.many .front .sym{font-size:22px}
+.slots.many .front .nm{font-size:8px;letter-spacing:-.2px}
+.slots.many .front .nm small{font-size:8px}
+.slots.many .front .num{font-size:10px}
+.read-block+.read-block{border-top:1.5px dashed var(--line);margin-top:16px;padding-top:14px}
+.fq{margin:0 0 6px;color:var(--muted);font-size:15px}
+.chain-box{margin-top:14px;padding:14px;border:1.5px solid var(--marigold);border-radius:14px;background:var(--surface)}
+.coin-big{display:flex;align-items:baseline;gap:8px;margin:6px 0 2px;font-size:18px}
+.coin-big span:first-child{font-size:30px}
+.coin-big b{font-size:44px;font-family:"Chonburi",serif;font-weight:400;line-height:1}
+.packs{display:grid;gap:8px;margin-top:12px}
+.pack{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 14px;cursor:pointer;text-align:left}
+.pack .pc{font-weight:700}
+.pack .pt{font-size:13px;color:var(--muted)}
+.h3s{font-size:18px;margin:22px 0 8px}
+.price-list div{display:flex;justify-content:space-between;gap:10px;padding:9px 2px;border-bottom:1px dashed var(--line);font-size:15px}
+
+.dash-h{font-size:clamp(26px,7vw,36px)!important}
+.checkin{margin-top:18px;background:var(--surface);color:var(--ink);border-radius:18px;padding:16px}
+.ck-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.ck-head b{font-family:"Chonburi",serif;font-weight:400;font-size:18px}
+.ck-head span{font-size:13px;color:var(--muted)}
+.ck-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:12px 0}
+.ck-day{border:1.5px solid var(--line);border-radius:10px;padding:6px 0 5px;text-align:center;font-size:11px;color:var(--muted);background:var(--bg);line-height:1.3}
+.ck-day b{display:block;font-size:15px;color:var(--ink)}
+.ck-day.got{background:var(--marigold);border-color:var(--marigold);color:var(--marigold-ink)}
+.ck-day.got b{color:var(--marigold-ink)}
+.ck-day.now{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.ck-day:last-child:not(.got) b{color:var(--marigold)}
+.ck-note{font-size:12.5px;color:var(--muted);margin:8px 0 0;text-align:center}
+.float-coin{position:fixed;width:60px;text-align:center;pointer-events:none;font-weight:700;color:var(--marigold);font-size:20px;z-index:60;animation:floatUp 1s ease-out forwards}
+@keyframes floatUp{to{transform:translateY(-70px);opacity:0}}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+.stat{display:flex;flex-direction:column;align-items:flex-start;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;cursor:pointer}
+.stat:not([data-go]){cursor:default}
+.stat .k{font-size:13px;color:var(--muted)}
+.stat .v{font-family:"Chonburi",serif;font-size:26px;line-height:1.25}
+.stat .u{font-size:13px;color:var(--muted)}
+.dash-sec{margin-top:24px}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sec-head h2{font-size:19px}
+.link{background:none;border:0;color:var(--marigold);font-weight:700;cursor:pointer;padding:4px 0;font-size:15px}
+.link.danger{color:var(--lotus);font-size:14px;margin-top:8px}
+.bars{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:140px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 10px 8px}
+.dbar{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;font-size:12px;color:var(--muted)}
+.dbar i{display:block;width:70%;max-width:26px;background:var(--marigold);border-radius:6px 6px 2px 2px;min-height:3px;transition:height .6s}
+.dbar em{font-style:normal;font-size:12px;color:var(--ink);font-weight:700;min-height:1em}
+.dbar.today span{color:var(--ink);font-weight:700}
+.hist{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.hist summary{cursor:pointer;list-style:none}
+.hist summary::-webkit-details-marker{display:none}
+.hist[open]{border-color:var(--marigold)}
+.h-top{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}
+.h-m{font-weight:700;color:var(--marigold)}
+.h-q{font-weight:600;margin:3px 0}
+.h-cards{font-size:13px;color:var(--muted)}
+.h-text{white-space:pre-wrap;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:15px}
+.empty{color:var(--muted);text-align:center;padding:18px;background:var(--surface);border:1.5px dashed var(--line);border-radius:14px;font-size:15px}
+.sync{font-size:13px;color:var(--muted);text-align:center;margin:16px 0 0}
+
+.sec-sub{margin:-4px 0 10px;font-size:14px;color:var(--muted)}
+.lotus-card{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px}
+.lstage{width:120px;height:100px;display:block}
+.lc-txt .k{font-size:13px;color:var(--muted);display:block}
+.lc-txt b{font-family:"Chonburi",serif;font-weight:400;font-size:22px}
+.lc-txt .u{font-size:13px;color:var(--muted)}
+.lc-txt .meter{margin:6px 0 4px}
+.stages{display:flex;gap:5px;margin-top:8px}
+.stages span{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--lotus);background:transparent}
+.stages span.on{background:var(--lotus)}
+.ml-row{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+.ml-row .lstage{width:84px;height:70px}
+.hist{position:relative}
+.stamp{position:absolute;top:46px;right:10px;z-index:1;pointer-events:none;font-family:"Chonburi",serif;font-size:15px;color:var(--sc);border:3px double var(--sc);border-radius:10px;padding:2px 10px;transform:rotate(-12deg);opacity:.88;background:color-mix(in srgb,var(--surface) 70%,transparent)}
+.stamp.new{animation:stampIn .5s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes stampIn{0%{transform:rotate(-30deg) scale(2.4);opacity:0}70%{transform:rotate(-10deg) scale(.92);opacity:1}100%{transform:rotate(-12deg) scale(1)}}
+.stamps{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.stamp-btn{font-family:"Chonburi",serif;font-size:14px;color:var(--sc);background:transparent;border:2px dashed var(--sc);border-radius:10px;padding:4px 12px;cursor:pointer;transform:rotate(-3deg)}
+.stamp-btn.on{border-style:double;border-width:3px;background:color-mix(in srgb,var(--sc) 14%,transparent)}
+.stamp-btn:active{transform:rotate(-3deg) scale(.92)}
+.rate-box{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line)}
+.rate-q{margin:0;font-weight:600;font-size:15px}
+.rnote{min-height:64px;margin:4px 0 8px;font-size:15px}
+.h-note{font-size:13.5px;margin-top:4px}
+.cat-tag{display:inline-block;font-size:11.5px;font-weight:700;border:1px solid var(--line);border-radius:999px;padding:0 8px;margin-right:6px;color:var(--muted);vertical-align:2px}
+.pend{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+.stamp-sum{display:flex;gap:14px;justify-content:center;font-size:14px;margin-top:4px}
+.stamp-sum span{color:var(--sc);font-family:"Chonburi",serif}
+.cat-wrap{display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px}
+.donut{width:130px;height:130px}
+.d-num{font-family:"Chonburi",serif;font-size:22px;fill:var(--ink)}
+.d-lbl{font-size:11px;fill:var(--muted)}
+.legend div{display:grid;grid-template-columns:12px 1fr auto auto;gap:8px;align-items:center;font-size:14.5px;padding:3px 0}
+.legend i{width:12px;height:12px;border-radius:3px}
+.legend em{font-style:normal;color:var(--muted);font-size:13px;min-width:34px;text-align:right}
+@media (max-width:360px){.cat-wrap,.lotus-card{grid-template-columns:1fr;justify-items:center}}
+
+body.cb-classic .back,.tp .back.cb-classic,.ul-card .back.cb-classic{background:var(--paper) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg stroke='%232A2152' stroke-width='1.5' stroke-linecap='round' fill='none'%3E%3Cpath d='M50 10 L50.6 90'/%3E%3Cpath d='M12 49.5 L88 51'/%3E%3Cpath d='M23 23 L77 78'/%3E%3Cpath d='M78 22 L22 77'/%3E%3Cpath d='M37 14 L63 86'/%3E%3Cpath d='M64 14 L36 85'/%3E%3C/g%3E%3C/svg%3E") center/66% no-repeat;border-color:var(--sk)}
+body.cb-moon .back,.tp .back.cb-moon,.ul-card .back.cb-moon{background:#232A5C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M58 22a28 28 0 1 0 0 56a36 36 0 0 1 0-56z' fill='%23DDE1F4'/%3E%3Cg fill='%23DDE1F4'%3E%3Ccircle cx='20' cy='18' r='1.6'/%3E%3Ccircle cx='82' cy='26' r='1.2'/%3E%3Ccircle cx='78' cy='80' r='1.6'/%3E%3Ccircle cx='16' cy='76' r='1.1'/%3E%3Ccircle cx='88' cy='54' r='1'/%3E%3C/g%3E%3C/svg%3E") center/70% no-repeat;border-color:#C9CDE6}
+body.cb-lotus .back,.tp .back.cb-lotus,.ul-card .back.cb-lotus{background:#FBE1E9 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23B8406A' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M50 78C40 64 40 42 50 26C60 42 60 64 50 78Z'/%3E%3Cpath d='M50 78C34 72 24 58 22 42C36 46 46 60 50 78Z'/%3E%3Cpath d='M50 78C66 72 76 58 78 42C64 46 54 60 50 78Z'/%3E%3Cpath d='M22 82Q50 74 78 82'/%3E%3C/g%3E%3C/svg%3E") center/72% no-repeat;border-color:#B8406A}
+body.cb-gold .back,.tp .back.cb-gold,.ul-card .back.cb-gold{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23E9C46A' stroke-width='2'%3E%3Cpath d='M50 14L80 50L50 86L20 50Z'/%3E%3Cpath d='M50 28L68 50L50 72L32 50Z'/%3E%3Ccircle cx='50' cy='50' r='6' fill='%23E9C46A'/%3E%3Cpath d='M50 6v8M50 86v8M6 50h14M80 50h14'/%3E%3C/g%3E%3C/svg%3E") center/80% no-repeat,repeating-linear-gradient(45deg,transparent 0 8px,#E9C46A33 8px 9px),repeating-linear-gradient(-45deg,transparent 0 8px,#E9C46A33 8px 9px),#7A1F2B;border-color:#E9C46A}
+body.cb-star .back,.tp .back.cb-star,.ul-card .back.cb-star{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 30L54 46L70 50L54 54L50 70L46 54L30 50L46 46Z' fill='%23F3CF73'/%3E%3Cg fill='%23fff'%3E%3Ccircle cx='18' cy='20' r='1.3'/%3E%3Ccircle cx='30' cy='70' r='1'/%3E%3Ccircle cx='80' cy='18' r='1.5'/%3E%3Ccircle cx='72' cy='82' r='1.1'/%3E%3Ccircle cx='86' cy='60' r='.9'/%3E%3Ccircle cx='12' cy='50' r='1'/%3E%3Ccircle cx='60' cy='12' r='.8'/%3E%3Ccircle cx='40' cy='88' r='1.2'/%3E%3C/g%3E%3C/svg%3E") center/86% no-repeat,radial-gradient(circle at 50% 40%,#3A2670,#0E0A22);border-color:#F3CF73}
+.nudge{font-size:14px;color:var(--ok);margin:0 0 10px;min-height:1em}
+.tier-box{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px}
+.tier-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.tier-head .k{font-size:13px;color:var(--muted);width:100%}
+.tier-head b{font-family:"Chonburi",serif;font-weight:400;font-size:22px}
+.tier-head .u{font-size:13px;color:var(--muted)}
+.tier-box .meter{margin:10px 0 6px}
+.tier-next{font-size:14px;margin:0 0 10px;line-height:1.55}
+.tiers{display:grid;gap:8px}
+.tier{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;border:1.5px dashed var(--line);border-radius:12px;padding:8px 10px}
+.tier .tb{font-weight:700;font-size:13px;text-align:center;border-radius:8px;padding:4px 0;background:var(--bg);color:var(--muted)}
+.tier b{display:block;font-size:15px}
+.tier span{font-size:13px;color:var(--muted)}
+.tier.got{border-style:solid;border-color:var(--marigold)}
+.tier.got .tb{background:var(--marigold);color:var(--marigold-ink)}
+.ticket{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surface);border:1.5px solid var(--marigold);border-radius:12px;padding:10px 14px;margin-bottom:8px;background-image:radial-gradient(circle at 0 50%,var(--bg) 7px,transparent 8px),radial-gradient(circle at 100% 50%,var(--bg) 7px,transparent 8px)}
+.ticket>span{font-size:24px}
+.ticket b{display:block}
+.ticket div span{font-size:13px;color:var(--muted)}
+.ticket em{font-style:normal;font-weight:700;font-size:20px;color:var(--marigold)}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.tp{display:flex;flex-direction:column;align-items:center;gap:4px;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:10px 6px;cursor:pointer}
+.tp .face{position:relative;width:60px;height:96px;border-radius:8px;border-width:1.6px;border-style:solid}
+.tp b{font-size:13.5px;text-align:center;line-height:1.3}
+.tp span{font-size:11.5px;color:var(--muted);text-align:center}
+.tp.on{border-color:var(--marigold);box-shadow:0 0 0 2px var(--marigold) inset}
+.tp.locked .face{filter:saturate(.45) opacity(.7)}
+.ul-card{display:flex;justify-content:center;margin:4px 0 12px}
+.ul-card .face{position:relative;width:96px;height:156px;border-radius:12px;border-width:2px;border-style:solid;animation:ulIn .7s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes ulIn{from{transform:rotateY(90deg) scale(.6);opacity:0}}
+.ul-list p{margin:4px 0;font-size:15px}
+#unlockBody .btn.primary{margin-top:14px}
+.why-box{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 16px;font-size:14.5px}
+.why-box p{margin:6px 0 0;line-height:1.55;color:var(--muted)}
+.why-box p b{color:var(--ink)}
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="logo"><i></i>มูใจ</div>
+    <button class="coin-pill" id="coinPill" aria-label="เหรียญคงเหลือ แตะเพื่อเติม"><span aria-hidden="true">🪙</span><b id="coinN">30</b><span class="plus" aria-hidden="true">+</span></button>
+  </div>
+</header>
+
+<div class="view" data-view="home">
+<div class="hero">
+  <div class="wrap">
+    <div class="greet" id="greet">สวัสดี</div>
+    <h1 class="dash-h">แดชบอร์ดของคุณ</h1>
+    <div class="checkin" id="checkin"></div>
+
+    <div class="daily">
+      <div>
+        <button class="card" id="dailyCard" aria-label="เปิดไพ่ประจำวัน">
+          <div class="card-inner">
+            <div class="face back"></div>
+            <div class="face front" id="dailyFront"></div>
+          </div>
+        </button>
+        <div class="hint" id="dailyHint">แตะเพื่อเปิดไพ่วันนี้</div>
+      </div>
+      <div class="daily-text" id="dailyText">
+        <h2>ไพ่ประจำวันของคุณ</h2>
+        <div class="m">ทุกวันได้ไพ่ 1 ใบ คำนวณจากชื่อและวันเกิดของคุณ</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="stat-grid" id="statGrid"></div>
+  <section class="dash-sec" id="lotusBox"></section>
+  <section class="dash-sec"><div class="sec-head"><h2>ทำนายแล้วตรงไหม?</h2><button class="link" data-go="history">ทั้งหมด →</button></div><p class="sec-sub">เมื่อเรื่องเกิดขึ้นจริง กลับมาประทับตราให้คำทำนาย</p><div id="pendBox"></div></section>
+  <section class="dash-sec"><div class="sec-head"><h2>หมวดที่ถามบ่อย</h2></div><div id="catBox"></div></section>
+  <section class="dash-sec"><div class="sec-head"><h2>ดูดวง 7 วันล่าสุด</h2></div><div class="bars" id="bars"></div></section>
+  <section class="dash-sec"><div class="sec-head"><h2>ประวัติล่าสุด</h2><button class="link" data-go="history">ดูทั้งหมด →</button></div><div id="recent"></div></section>
+  <div class="tiles">
+    <button class="tile" data-go="ask"><b>ถามคำถาม</b><span>ทาโรต์ · เลอนอร์มองด์ · ออราเคิล สับและจั่วไพ่เอง</span><i>→</i></button>
+    <button class="tile" data-go="merit"><b>ทำบุญเสริมดวง</b><span id="homeMerit">เลือกมูลนิธิ สแกน QR ได้ทันที</span><i>→</i></button>
+    <button class="tile" data-go="me"><b>ข้อมูลของฉัน</b><span id="homeMe">กรอกวันเกิด เพื่อคำทำนายที่เป็นเรื่องของคุณ</span><i>→</i></button>
+  </div>
+  <p class="sync" id="syncState"></p>
+  <footer>คำทำนายเพื่อความบันเทิง ไม่ใช่คำแนะนำทางการแพทย์ กฎหมาย หรือการเงิน</footer>
+</div>
+</div>
+
+<div class="view" data-view="history" hidden><div class="wrap"><section class="block">
+  <button class="link" data-go="home">← กลับแดชบอร์ด</button>
+  <h2>ประวัติการดูดวง</h2>
+  <p class="sub" id="histCount"></p>
+  <div class="chips" id="histFilter"></div>
+  <div id="histList" style="margin-top:14px"></div>
+</section></div></div>
+
+<div class="view" data-view="ask" hidden><main class="wrap">
+  <section class="block" id="ask">
+    <h2>ถามคำถามของคุณ</h2>
+    <p class="sub">เลือกศาสตร์ เลือกเรื่องที่จะถาม แล้วพิมพ์คำถามแบบละเอียดได้เลย</p>
+
+    <div class="methods" id="methods"></div>
+    <div id="spreadBox"></div>
+
+    <p class="lbl" style="margin-top:18px">เกี่ยวกับเรื่องอะไร <span style="font-weight:400;color:var(--muted)">(ไม่เลือกก็ได้ ถามเรื่องไหนก็ได้)</span></p>
+    <div class="chips" id="topics"></div>
+    <label class="f" for="q" style="margin-top:16px">คำถาม</label>
+    <textarea id="q" placeholder="เล่าสถานการณ์มาได้เลย ยิ่งละเอียดยิ่งดี"></textarea>
+    <div class="examples">
+      <p>ตัวอย่างคำถาม แตะเพื่อใช้</p>
+      <div id="examples"></div>
+    </div>
+    <button class="btn primary" id="drawBtn">เริ่มสับไพ่</button>
+
+    <div class="ad" id="ad1"><span><b>โฆษณา</b> · ร้านพระเครื่องออนไลน์ ลด 20% วันนี้</span><button class="btn ghost" style="padding:6px 12px;font-size:14px" data-upgrade>ปิดโฆษณา</button></div>
+
+    <div id="result" hidden>
+      <ol class="steps" id="steps"><li>สับไพ่</li><li>เลือกไพ่</li><li>อ่านคำทำนาย</li></ol>
+      <div class="table" id="table">
+        <div class="slots" id="slots"></div>
+        <div class="pile" id="pile">
+          <button class="stack" id="stack" aria-label="แตะเพื่อสับไพ่เพิ่ม"></button>
+          <div class="shuf-count" id="shufCount"></div>
+          <button class="sketch-btn" id="doneShuf">สับเสร็จแล้ว</button>
+        </div>
+        <div class="fan" id="fan" hidden></div>
+        <p class="table-hint" id="tableHint"></p>
+      </div>
+      <div class="reading" id="reading" aria-live="polite" hidden></div>
+      <div class="chain-box" id="chainBox" hidden>
+        <label class="f">ถามต่อจากใบก่อน (ไม่บังคับ)<input id="followQ" maxlength="120" placeholder="เช่น แล้วเขาจะติดต่อกลับมาเมื่อไหร่"></label>
+        <button class="btn primary" id="nextCard">เปิดใบต่อไป</button>
+      </div>
+
+      <button class="btn primary" id="toMerit" data-go="merit" hidden>ทำบุญเสริมดวงต่อ →</button>
+      <button class="btn ghost" id="againBtn" hidden>ถามคำถามใหม่</button>
+    </div>
+  </section>
+</main></div>
+
+<div class="view" data-view="merit" hidden><div class="wrap"><section class="block">
+      <div class="merit" id="merit" style="margin-top:0;border:0;padding:0">
+        <h2>ทำบุญเสริมดวง</h2>
+        <p class="sub" id="meritWhy" style="margin-bottom:0"></p>
+        <div class="fdn-list" id="fdnList"></div>
+        <div class="qrbox" id="qrbox">
+          <p style="font-weight:600;margin:4px 0 0;text-align:left">เลือกจำนวนเงิน แล้วดูว่าบุญของคุณกลายเป็นอะไร</p>
+          <div class="amt-list" id="amounts"></div>
+          <label class="custom">หรือกรอกเอง ฿<input id="customAmt" type="number" inputmode="numeric" min="1" max="100000" placeholder="เช่น 250"></label>
+          <div class="impact" id="impactLine" aria-live="polite"></div>
+          <div id="qr"></div>
+          <div style="font-size:13px;color:var(--muted)">QR ตัวอย่างสำหรับเดโม ยังสแกนจ่ายจริงไม่ได้</div>
+          <button class="btn primary" id="donedBtn">ฉันทำบุญแล้ว</button>
+        </div>
+        <div class="blessing" id="blessing" aria-live="polite"></div>
+      </div>
+
+  <div class="mstat" id="meritStat"></div>
+</section></div></div>
+
+<div class="view" data-view="me" hidden><div class="wrap">
+  <section class="block" id="profile">
+    <h2>ข้อมูลของคุณ</h2>
+    <p class="sub">ไม่บังคับกรอก แต่ถ้ากรอก คำทำนายจะเป็นเรื่องของคุณมากขึ้น ไม่ใช่แบบเหมารวม</p>
+    <div class="why-box"><b>ข้อมูลนี้ใช้ทำอะไร</b>
+      <p>🔮 <b>คำทำนาย:</b> AI ใช้วันเกิด ราศี อายุ และสถานะ อ่านไพ่ให้ตรงกับชีวิตคุณ เช่น คนโสดกับคนมีแฟน ได้คำแนะนำเรื่องรักต่างกัน</p>
+      <p>🎴 <b>ไพ่ประจำวัน:</b> สุ่มจากชื่อและวันเกิด พร้อมบอกสีเสื้อมงคลตามวันเกิด</p>
+      <p>🪷 <b>เรื่องที่สนใจ:</b> ใช้แนะนำมูลนิธิและเคล็ดลับไพ่ประจำวัน ไม่ได้จำกัดว่าจะถามเรื่องอะไร</p></div>
+    <div class="grid2">
+      <label class="f">ชื่อเล่น<input id="pName" placeholder="เช่น มิ้นท์" autocomplete="nickname"></label>
+      <label class="f">วันเกิด<input id="pBirth" type="date"></label>
+      <label class="f">เวลาเกิด (ถ้าทราบ)<input id="pTime" type="time"></label>
+      <label class="f">สถานะตอนนี้
+        <select id="pStatus">
+          <option value="">ไม่ระบุ</option><option>โสด</option><option>มีแฟน</option><option>แต่งงานแล้ว</option><option>ความสัมพันธ์ไม่ชัดเจน</option>
+        </select>
+      </label>
+    </div>
+    <p style="font-weight:600;font-size:15px;margin:16px 0 8px">เรื่องที่สนใจเป็นหลัก <span style="font-weight:400;color:var(--muted)">(ไม่จำกัดคำถาม)</span></p>
+    <div class="chips" id="concerns"></div>
+    <div class="persona" id="persona" hidden></div>
+    <button class="btn primary" data-go="ask">บันทึกแล้วไปดูดวง →</button>
+  </section>
+</div></div>
+
+<div class="view" data-view="plans" hidden><div class="wrap">
+  <section class="block">
+    <h2>เหรียญของฉัน</h2>
+    <div class="coin-big"><span aria-hidden="true">🪙</span><b id="coinBig">30</b><span>เหรียญ</span></div>
+    <p class="sub" id="adState"></p>
+    <button class="btn primary" id="topBtn">เติมเหรียญ</button>
+    <div class="packs" id="packList"></div>
+    <h3 class="h3s">ระดับสมาชิกและของแถม</h3>
+    <div class="tier-box" id="tierBox"></div>
+    <h3 class="h3s">ตั๋วดูดวงฟรีของฉัน</h3>
+    <div id="ticketBox"></div>
+    <h3 class="h3s">ธีมไพ่</h3>
+    <div class="themes" id="themeBox"></div>
+    <h3 class="h3s">ใช้เหรียญทำอะไรได้บ้าง</h3>
+    <div class="price-list">
+      <div><span>ทาโรต์ 1 ใบ · ออราเคิล 1 ใบ</span><b>ฟรี</b></div>
+      <div><span>ทาโรต์ 3 ใบ · ออราเคิล 3 ใบ</span><b>5 🪙</b></div>
+      <div><span>ทาโรต์ 4 ใบ (ความรัก)</span><b>8 🪙</b></div>
+      <div><span>ทาโรต์ 5 ใบ</span><b>10 🪙</b></div>
+      <div><span>ทาโรต์ Celtic Cross 10 ใบ</span><b>20 🪙</b></div>
+      <div><span>เลอนอร์มองด์ เปิดต่อเนื่อง</span><b>ใบละ 3 🪙</b></div>
+    </div>
+    <button class="btn ghost" id="resetCoins" style="width:100%;margin-top:14px">รีเซ็ตเหรียญ (สำหรับเดโม)</button>
+  </section>
+  <section class="block" id="biz">
+    <h2>โมเดลรายได้</h2>
+    <p class="sub">สำหรับนำเสนอ: มูใจหารายได้จาก 3 ทาง</p>
+    <div class="revenue">
+      <div><b>โฆษณา</b><p>ผู้ใช้ฟรีเห็นโฆษณา เมื่อเติมเงินครั้งแรก โฆษณาจะถูกปิดถาวร</p></div>
+      <div><b>ขายเหรียญ</b><p>ผู้ใช้เติมเหรียญเพื่อเปิดไพ่หลายใบ เช่น ทาโรต์ 5 ใบ, Celtic Cross และเลอนอร์มองด์แบบถามต่อเนื่อง แพ็กเริ่มต้น 30 เหรียญ ฿29</p></div>
+      <div><b>ค่าฝาก QR มูลนิธิ</b><p>มูลนิธิจ่ายรายเดือนเพื่อแสดง QR ทำบุญหลังคำทำนายที่เกี่ยวข้อง เช่น 990 บาท/เดือน (ราคาตัวอย่าง)</p></div>
+    </div>
+  </section>
+  <footer>เดโมเพื่อการนำเสนอ · คำทำนายเพื่อความบันเทิง ไม่ใช่คำแนะนำทางการแพทย์ กฎหมาย หรือการเงิน · ชื่อมูลนิธิในหน้านี้เป็นชื่อสมมติ</footer>
+</div></div>
+
+<nav class="tabs" aria-label="เมนูหลัก"><div class="tabs-in"><button class="tab" data-go="home"><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11 12 4l8 7v9H4z"/><path d="M10 20v-5h4v5"/></svg>หน้าแรก</button><button class="tab" data-go="ask"><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="9" height="14" rx="1.5" transform="rotate(-10 7.5 13)"/><rect x="11" y="4" width="9" height="14" rx="1.5" transform="rotate(8 15.5 11)"/></svg>ดูดวง</button><button class="tab" data-go="merit"><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19c-4 0-7-3-7-7 3 0 5 1.5 7 4 2-2.5 4-4 7-4 0 4-3 7-7 7z"/><path d="M12 16c-2-3-2-7 0-10 2 3 2 7 0 10z"/></svg>ทำบุญ</button><button class="tab" data-go="me"><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>ข้อมูลฉัน</button><button class="tab" data-go="plans"><svg viewBox="0 0 24 24" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/></svg>เหรียญ</button></div></nav>
+
+<dialog id="upgrade">
+  <div class="mbody">
+    <h2 style="font-size:22px">เติมเหรียญ</h2>
+    <p class="sub" style="margin-bottom:8px">คงเหลือ <b id="dlgCoins">0</b> เหรียญ · เติมครั้งแรกปิดโฆษณาถาวร</p>
+    <div class="plans" id="plans"></div>
+    <p class="nudge" id="dlgNudge"></p>
+    <button class="btn primary" id="payBtn">ชำระ (จำลอง)</button>
+    <button class="btn ghost" style="width:100%;margin-top:8px" id="closeUp">ไว้ทีหลัง</button>
+  </div>
+</dialog>
+<dialog id="unlockDlg"><div class="mbody" id="unlockBody" style="text-align:center"></div></dialog>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+// ---------- data ----------
+const TAROT=[
+["0","คนโง่","☄","การเริ่มต้นใหม่ กล้าเสี่ยง","ประมาท ตัดสินใจเร็วเกินไป"],
+["I","นักมายากล","✦","มีทรัพยากรครบ ลงมือได้เลย","ใช้ความสามารถผิดทาง"],
+["II","นักบวชหญิง","☾","เชื่อสัญชาตญาณ เก็บความลับ","มองข้ามเสียงในใจ"],
+["III","จักรพรรดินี","❀","ความอุดมสมบูรณ์ ความรักงอกงาม","พึ่งพาคนอื่นมากไป"],
+["IV","จักรพรรดิ","♜","ความมั่นคง วางระบบให้ชัด","ดื้อ ควบคุมมากเกินไป"],
+["V","พระสังฆราช","⛩","ทำตามแบบแผน ขอคำปรึกษาผู้ใหญ่","อยากแหกกฎ"],
+["VI","คนรัก","♡","การเลือก ความสัมพันธ์ที่ลงตัว","ลังเล ไม่ตรงกัน"],
+["VII","รถศึก","➶","มุ่งมั่น เอาชนะอุปสรรค","หลงทิศ ควบคุมตัวเองไม่ได้"],
+["VIII","พละกำลัง","♌","ใจเย็นแต่หนักแน่น","ไม่มั่นใจในตัวเอง"],
+["IX","ฤๅษี","☼","ถอยมาทบทวน หาคำตอบในใจ","โดดเดี่ยวเกินไป"],
+["X","กงล้อแห่งโชคชะตา","☸","จังหวะเปลี่ยน โชคกำลังหมุนมา","เรื่องเดิมวนซ้ำ"],
+["XI","ความยุติธรรม","⚖","ผลลัพธ์ตามที่ทำ ความชัดเจน","ไม่ยุติธรรม เลี่ยงความรับผิดชอบ"],
+["XII","คนแขวน","⧖","รอจังหวะ มองมุมใหม่","ติดค้าง ไม่ยอมปล่อย"],
+["XIII","ความตาย","⚘","จบสิ่งเก่า เปิดทางสิ่งใหม่","กลัวการเปลี่ยนแปลง"],
+["XIV","ความพอดี","⚱","สมดุล ค่อยเป็นค่อยไป","ทำอะไรสุดโต่ง"],
+["XV","ปีศาจ","⛓","สิ่งที่ผูกมัดใจ ความอยาก","กำลังหลุดพ้น"],
+["XVI","หอคอย","⚡","เรื่องไม่คาดฝัน ความจริงเผยออกมา","หลีกเลี่ยงวิกฤต"],
+["XVII","ดวงดาว","★","ความหวัง การเยียวยา","หมดกำลังใจชั่วคราว"],
+["XVIII","ดวงจันทร์","☽","ความไม่ชัดเจน อย่าเพิ่งเชื่อทุกอย่าง","ความจริงค่อย ๆ ชัดขึ้น"],
+["XIX","ดวงอาทิตย์","☀","ความสำเร็จ ความสุขชัดเจน","ความสุขที่ล่าช้าไปหน่อย"],
+["XX","การพิพากษา","♫","ตื่นรู้ ได้โอกาสแก้ตัว","ตัดสินตัวเองหนักไป"],
+["XXI","โลก","◎","ความสำเร็จครบวงจร","ใกล้จบแต่ยังขาดอีกนิด"]];
+const LENOR=[
+["1","ผู้ขี่ม้า","♞","ข่าวสารกำลังมา"],["2","ใบโคลเวอร์","☘","โชคเล็ก ๆ ที่ไม่คาดคิด"],["3","เรือ","⛵","การเดินทาง การเปลี่ยนที่"],
+["4","บ้าน","⌂","ครอบครัว ความมั่นคง"],["5","ต้นไม้","♣","สุขภาพ การเติบโตช้าแต่มั่นคง"],["6","เมฆ","☁","ความสับสน ยังไม่ชัด"],
+["7","งู","∿","ความซับซ้อน ระวังคนรอบตัว"],["8","โลงศพ","▭","การจบ พักฟื้น"],["9","ช่อดอกไม้","✿","ของขวัญ คำชม"],
+["10","เคียว","☾","การตัดสินใจเฉียบขาด"],["11","แส้","≋","การโต้เถียง ทำซ้ำ ๆ"],["12","นก","♪","การคุยกัน ความกังวลเล็กน้อย"],
+["13","เด็ก","☺","การเริ่มใหม่ ความไร้เดียงสา"],["14","สุนัขจิ้งจอก","♘","ใช้ไหวพริบ ระวังเล่ห์"],["15","หมี","♛","ผู้มีอำนาจ เรื่องเงิน"],
+["16","ดวงดาว","★","ความหวัง เป้าหมาย"],["17","นกกระสา","➚","การเปลี่ยนแปลงที่ดี"],["18","สุนัข","♥","เพื่อนที่ไว้ใจได้"],
+["19","หอคอย","♜","องค์กร ความเป็นทางการ"],["20","สวน","❦","สังคม งานพบปะ"],["21","ภูเขา","▲","อุปสรรค ความล่าช้า"],
+["22","ทางแยก","⑂","ทางเลือก"],["23","หนู","◌","ความสูญเสียทีละน้อย ความเครียด"],["24","หัวใจ","❤","ความรัก ความเมตตา"],
+["25","แหวน","◯","สัญญา ข้อผูกมัด"],["26","หนังสือ","▤","ความลับ การเรียนรู้"],["27","จดหมาย","✉","เอกสาร ข้อความ"],
+["28","ชาย","♂","ผู้ชายในเรื่องนี้"],["29","หญิง","♀","ผู้หญิงในเรื่องนี้"],["30","ดอกลิลลี่","⚜","ความสงบ ความเป็นผู้ใหญ่"],
+["31","ดวงอาทิตย์","☀","ความสำเร็จ พลังบวก"],["32","ดวงจันทร์","☽","ชื่อเสียง อารมณ์"],["33","กุญแจ","⚷","ทางออก คำตอบ"],
+["34","ปลา","♓","การเงิน ธุรกิจ"],["35","สมอ","⚓","ความมั่นคง ยึดมั่น"],["36","ไม้กางเขน","✚","ภาระ บทเรียน"]];
+const ORACLE=[
+["1","Rising Lotus","❀","แม้อยู่ในโคลน คุณก็เบ่งบานได้ ช่วงยากกำลังจะผ่านไป"],["2","Let It Flow","〰","ปล่อยให้เรื่องเป็นไปตามจังหวะ ไม่ต้องฝืน"],
+["3","Inner Light","☼","คำตอบอยู่ในใจคุณแล้ว เชื่อความรู้สึกแรก"],["4","New Moon","☾","เวลาตั้งเจตนาใหม่ เริ่มจากก้าวเล็ก ๆ ได้เลย"],
+["5","Golden Thread","⟿","คนที่ใช่และโอกาสที่ใช่กำลังโยงมาหาคุณ"],["6","Rest","☁","พักก่อน ร่างกายและใจต้องการการเติมพลัง"],
+["7","Courage","♨","กล้าพูดสิ่งที่คิด ผลจะดีกว่าที่กลัว"],["8","Abundance","✦","ความอุดมสมบูรณ์มาจากการรู้จักพอและแบ่งปัน"],
+["9","Boundaries","◻","ปฏิเสธบ้างก็ได้ การรักษาขอบเขตคือการรักตัวเอง"],["10","Healing","✚","แผลเก่ากำลังสมาน ให้เวลากับมัน"],
+["11","Messenger","✉","รอข่าวหรือข้อความสำคัญในเร็ว ๆ นี้"],["12","Roots","♣","กลับไปหาครอบครัวหรือรากของตัวเอง แล้วจะได้คำตอบ"],
+["13","Open Door","⊓","ประตูใหม่เปิดแล้ว อย่ามัวมองประตูที่ปิดไป"],["14","Patience","⧖","สิ่งดีต้องใช้เวลา อย่าเร่งผล"],
+["15","Joy","✿","หาความสุขเล็ก ๆ วันนี้ แล้วพลังจะกลับมา"],["16","Truth","◉","ความจริงจะปรากฏ ซื่อตรงกับตัวเองก่อน"],
+["17","Release","➶","ปล่อยสิ่งที่ถ่วงใจ เพื่อรับสิ่งใหม่"],["18","Guardian","☗","มีคนคอยปกป้องและหวังดีกับคุณอยู่"],
+["19","Bloom","❁","ความพยายามที่ผ่านมาเริ่มออกดอกออกผล"],["20","Crossroads","⑂","ถึงเวลาเลือก เลือกทางที่ใจสงบ"],
+["21","Self-Love","♡","ดูแลตัวเองให้ดีเท่าที่คุณดูแลคนอื่น"],["22","Ocean","≈","ใจกว้างเหมือนทะเล ให้อภัยเพื่อความสงบของตัวเอง"],
+["23","Spark","✧","ไอเดียใหม่กำลังมา จดไว้แล้วลงมือ"],["24","Harvest","❦","ถึงเวลาเก็บเกี่ยวผลจากสิ่งที่ลงแรงไว้"]];
+
+const EN_T=["The Fool","The Magician","The High Priestess","The Empress","The Emperor","The Hierophant","The Lovers","The Chariot","Strength","The Hermit","Wheel of Fortune","Justice","The Hanged Man","Death","Temperance","The Devil","The Tower","The Star","The Moon","The Sun","Judgement","The World"];
+const EN_L=["Rider","Clover","Ship","House","Tree","Clouds","Snake","Coffin","Bouquet","Scythe","Whip","Birds","Child","Fox","Bear","Stars","Stork","Dog","Tower","Garden","Mountain","Crossroads","Mice","Heart","Ring","Book","Letter","Man","Woman","Lily","Sun","Moon","Key","Fish","Anchor","Cross"];
+TAROT.forEach((c,i)=>c[1]=EN_T[i]);LENOR.forEach((c,i)=>c[1]=EN_L[i]);
+const CONCERNS=["งาน","ความรัก","การเงิน","สุขภาพ","ครอบครัว","การเรียน"];
+const TOPICS=[...CONCERNS,"คนรอบตัว","อื่น ๆ"];
+let topic=null;
+function curTopic(){const t=topic||(flow&&classify(flow.q))||S.concern;return FDN[t]?t:S.concern}
+const EXAMPLES={
+ "คนรอบตัว":["ช่วงนี้เขาเป็นยังไงบ้าง สบายดีไหม","เพื่อนสนิทดูห่างไป เขามีเรื่องอะไรในใจหรือเปล่า"],
+ "อื่น ๆ":["ช่วงนี้ควรโฟกัสเรื่องไหนในชีวิตมากที่สุด","ย้ายไปอยู่เมืองใหม่ปีหน้าจะดีไหม"],
+ "งาน":["ควรลาออกจากที่ทำงานปัจจุบันภายในปีนี้ไหม หัวหน้าไม่ค่อยเห็นคุณค่างานเรา","สัมภาษณ์งานที่ใหม่สัปดาห์หน้า มีโอกาสได้ไหม และควรระวังอะไร"],
+ "ความรัก":["คนที่คุยอยู่ 3 เดือนคิดจริงจังกับเราไหม หรือแค่คุยเล่น","แฟนเก่าทักมาหลังเลิกกัน 1 ปี ควรให้โอกาสอีกครั้งไหม"],
+ "การเงิน":["เดือนนี้ควรเริ่มลงทุนหรือเก็บเงินสดไว้ก่อน","หนี้บัตรเครดิตจะเคลียร์ได้ภายในปีนี้ไหม ควรเริ่มจากตรงไหน"],
+ "สุขภาพ":["ช่วงนี้นอนไม่ค่อยหลับ ควรปรับเรื่องไหนในชีวิตก่อน"],
+ "ครอบครัว":["จะคุยกับพ่อแม่เรื่องย้ายไปทำงานต่างจังหวัดยังไงให้เข้าใจกัน"],
+ "การเรียน":["ควรเรียนต่อปริญญาโทตอนนี้ หรือทำงานเก็บประสบการณ์ก่อน"]};
+const METHODS=[
+ {id:"tarot",name:"ทาโรต์",desc:"22 ใบหลัก เลือกแบบวางไพ่ได้"},
+ {id:"lenormand",name:"เลอนอร์มองด์",desc:"เปิดต่อเนื่อง ถามต่อได้ ≤7 ใบ"},
+ {id:"oracle",name:"ออราเคิล",desc:"ข้อความให้กำลังใจ"}];
+const RANGES=[{id:"day",name:"รายวัน"},{id:"month",name:"รายเดือน"},{id:"specific",name:"เจาะจง"}];
+const FIT={
+ tarot:{t:"เจาะลึกความรู้สึกและการตัดสินใจ",d:"เหมาะกับคำถามที่ต้องเลือกทาง หรืออยากเข้าใจใจตัวเองและคนอื่น เช่น ควรลาออกไหม, เขารู้สึกยังไงกับเรา ไพ่จะบอกเหตุผลเบื้องหลังและทางออก"},
+ lenormand:{t:"ตอบตรง เห็นเหตุการณ์จริง",d:"เหมาะกับคำถามที่อยากรู้ว่าจะเกิดอะไรขึ้น เช่น จะได้งานไหม, เขาจะติดต่อมาเมื่อไหร่ และถามต่อเจาะรายละเอียดทีละใบได้"},
+ oracle:{t:"กำลังใจและข้อคิด",d:"เหมาะกับวันที่เหนื่อย หรืออยากได้แนวทางดูแลตัวเอง ไม่ใช่การทำนายเหตุการณ์ เช่น ช่วงนี้ควรโฟกัสอะไร, จะผ่านช่วงนี้ไปได้ยังไง"},
+ one:"คำถามใช่/ไม่ใช่ หรืออยากได้คำตอบเร็ว ๆ",
+ pos:"ปัญหาที่ติดอยู่ อยากรู้ว่าอะไรขวางและควรแก้ยังไง",
+ ppf:"อยากเห็นเส้นทางของเรื่อง ว่ามาจากไหนและกำลังไปทางไหน",
+ love:"เรื่องความรัก อยากรู้ใจทั้งเราและเขา และอนาคตของความสัมพันธ์",
+ five:"เรื่องซับซ้อนที่มีหลายปัจจัย อยากได้คำแนะนำที่ชัดเจน",
+ celtic:"เรื่องใหญ่ในชีวิต เช่น ย้ายงาน แต่งงาน ย้ายบ้าน อยากเห็นภาพรวมครบทุกมุม",
+ o1:"ข้อความสั้น ๆ ให้กำลังใจประจำวัน",
+ o3:"อยากดูแลตัวเองครบทั้งความคิด ร่างกาย และจิตใจ"};
+function fitBox(){const f=FIT[S.method];return `<div class="fit-box"><span class="fit-k">ไพ่${METHODS.find(m=>m.id===S.method).name} · ${f.t}</span><p>${f.d}</p></div>`}
+const SPREADS={
+ tarot:[
+  {id:"one",name:"1 ใบ",sub:"คำตอบด่วน",cost:0,pos:["Answer"]},
+  {id:"pos",name:"3 ใบ",sub:"Persona · Obstacle · Solution",cost:5,pos:["Persona","Obstacle","Solution"]},
+  {id:"ppf",name:"3 ใบ",sub:"Past · Present · Future",cost:5,pos:["Past","Present","Future"]},
+  {id:"love",name:"4 ใบ",sub:"ความรัก: You · Them · Bond · Future",cost:8,pos:["You","Them","Bond","Future"]},
+  {id:"five",name:"5 ใบ",sub:"เจาะลึกสถานการณ์",cost:10,pos:["Situation","Challenge","Hidden","Advice","Outcome"]},
+  {id:"celtic",name:"10 ใบ",sub:"Celtic Cross ครบทุกมุม",cost:20,pos:["Present","Challenge","Root","Past","Crown","Near Future","Self","Environment","Hopes & Fears","Outcome"]}],
+ oracle:[
+  {id:"o1",name:"1 ใบ",sub:"ข้อความถึงคุณวันนี้",cost:0,pos:["Message"]},
+  {id:"o3",name:"3 ใบ",sub:"Mind · Body · Spirit",cost:5,pos:["Mind","Body","Spirit"]}]};
+const POS_TH={Answer:"คำตอบ",Persona:"ตัวผู้ถามและสภาพตอนนี้",Obstacle:"อุปสรรค",Solution:"ทางออก",Past:"อดีต",Present:"ปัจจุบัน",Future:"อนาคต",
+ You:"ตัวผู้ถาม",Them:"อีกฝ่าย",Bond:"ความสัมพันธ์ตอนนี้",Situation:"สถานการณ์",Challenge:"ความท้าทาย",Hidden:"สิ่งที่ซ่อนอยู่",Advice:"คำแนะนำ",Outcome:"ผลลัพธ์",
+ Root:"รากของเรื่อง",Crown:"เป้าหมายที่หวัง","Near Future":"อนาคตอันใกล้",Self:"ทัศนคติของผู้ถาม",Environment:"คนรอบตัว","Hopes & Fears":"ความหวังและความกลัว",
+ Message:"ข้อความถึงผู้ถาม",Mind:"ความคิด",Body:"ร่างกายและการกระทำ",Spirit:"จิตใจ"};
+const PACKS=[{n:30,price:29,tag:"เริ่มต้น"},{n:120,price:99,tag:"ยอดนิยม · โบนัส 20"},{n:400,price:299,tag:"คุ้มสุด · โบนัส 100"}];
+const LEN_COST=3,LEN_MAX=7;
+const TIERS=[{at:99,name:"ผู้ศรัทธา",ticket:["five",1],theme:"moon"},{at:299,name:"ผู้หยั่งรู้",ticket:["celtic",1],theme:"lotus"},
+ {at:599,name:"ผู้มองเห็น",ticket:["len",1],theme:"gold"},{at:999,name:"ปรมาจารย์",ticket:["celtic",2],theme:"star"}];
+const TICKET_NAME={five:"ทาโรต์ 5 ใบ",celtic:"Celtic Cross 10 ใบ",len:"เลอนอร์มองด์ต่อเนื่อง 7 ใบ"};
+const THEMES=[{id:"classic",name:"ลายเส้นคลาสสิก",at:0},{id:"moon",name:"แสงจันทร์",at:99},{id:"lotus",name:"บัวชมพู",at:299},{id:"gold",name:"ลายไทยทอง",at:599},{id:"star",name:"ทางช้างเผือก",at:999}];
+
+const FDN={
+ "งาน":[["🎓","มูลนิธิทุนการศึกษาเพื่อน้อง","ทุนเรียนให้เด็กในชนบท เสริมดวงการงาน การเรียน"],["📚","มูลนิธิห้องสมุดชุมชน","บริจาคหนังสือ เสริมปัญญา"]],
+ "การเรียน":[["🎓","มูลนิธิทุนการศึกษาเพื่อน้อง","ทุนเรียนให้เด็กในชนบท เสริมดวงการเรียน"],["📚","มูลนิธิห้องสมุดชุมชน","บริจาคหนังสือ เสริมปัญญา"]],
+ "ความรัก":[["🕊","มูลนิธิบ้านพักผู้สูงอายุ","ดูแลผู้สูงวัยที่อยู่ลำพัง เสริมเมตตา"],["🐶","มูลนิธิช่วยเหลือสัตว์จร","ให้อาหารและรักษาสัตว์ เสริมเสน่ห์ความรัก"]],
+ "การเงิน":[["🍚","มูลนิธิธนาคารอาหาร","ส่งอาหารให้ครอบครัวที่ขาดแคลน เสริมโภคทรัพย์"],["🛕","กองทุนบูรณะวัดชนบท","ร่วมสร้างและซ่อมแซมวัด"]],
+ "สุขภาพ":[["🏥","มูลนิธิเพื่อผู้ป่วยยากไร้","ค่ารักษาผู้ป่วยที่ไม่มีทุนทรัพย์ เสริมสุขภาพ"],["♿","กองทุนรถเข็นผู้พิการ","ซ่อมและมอบรถเข็น เสริมสุขภาพ อายุยืน"]],
+ "ครอบครัว":[["🏠","มูลนิธิบ้านเด็กกำพร้า","ดูแลเด็กไร้ที่พึ่ง เสริมความอบอุ่นในบ้าน"],["🕊","มูลนิธิบ้านพักผู้สูงอายุ","ดูแลผู้สูงวัยที่อยู่ลำพัง"]]};
+const DAYS=[["อาทิตย์","แดง"],["จันทร์","เหลือง"],["อังคาร","ชมพู"],["พุธ","เขียว"],["พฤหัสบดี","ส้ม"],["ศุกร์","ฟ้า"],["เสาร์","ม่วง"]];
+const ZOD=[["มังกร",19],["กุมภ์",18],["มีน",20],["เมษ",19],["พฤษภ",20],["เมถุน",20],["กรกฎ",22],["สิงห์",22],["กันย์",22],["ตุลย์",22],["พิจิก",21],["ธนู",21],["มังกร",31]];
+
+// ---------- state ----------
+const LS={get(k){try{return JSON.parse(localStorage.getItem("mujai:"+k))}catch(e){return null}},
+  set(k,v){try{localStorage.setItem("mujai:"+k,JSON.stringify(v))}catch(e){}}};
+const MAIN_KEYS=["state","daily","merit","checkin"];
+let cloud=null,cloudT=null,cloudBusy=false,cloudDirty=false;
+const store={get:k=>LS.get(k),set(k,v){LS.set(k,v);if(MAIN_KEYS.includes(k))queueCloud()}};
+function queueCloud(){if(!cloud)return;clearTimeout(cloudT);cloudT=setTimeout(pushCloud,800)}
+async function pushCloud(){
+  if(!cloud)return;if(cloudBusy){cloudDirty=true;return}
+  cloudBusy=true;const body={v:1};MAIN_KEYS.forEach(k=>{body[k]=LS.get(k)??null});
+  try{await cloud.main.set(body)}catch(e){if(e&&(e.code==="invalid_argument"||e.code==="not_granted")){cloud=null;syncBadge()}}
+  cloudBusy=false;if(cloudDirty){cloudDirty=false;pushCloud()}
+}
+let HIST=LS.get("history")||[];
+function saveHistLocal(){HIST.sort((a,b)=>b.t-a.t);HIST=HIST.slice(0,50);LS.set("history",HIST)}
+function upsertHistory(e){
+  const i=HIST.findIndex(x=>x.id===e.id);if(i>=0)HIST[i]=e;else HIST.unshift(e);saveHistLocal();
+  if(cloud)cloud.hist.doc(e.id).set(e).catch(()=>{});
+}
+function deleteHistory(id){HIST=HIST.filter(x=>x.id!==id);saveHistLocal();if(cloud)cloud.hist.doc(id).delete().catch(()=>{})}
+function todayStr(d=new Date()){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+const S=Object.assign({name:"",birth:"",time:"",status:"",concern:"งาน",method:"tarot",range:"day",coins:30,topped:false,spreads:{tarot:"pos",oracle:"o1"}},store.get("state")||{});
+if(!METHODS.some(m=>m.id===S.method))S.method="tarot";
+if(typeof S.coins!=="number")S.coins=30;if(typeof S.paid!=="number")S.paid=0;if(!S.tickets)S.tickets={};if(!S.theme)S.theme="classic";if(!S.spreads)S.spreads={tarot:"pos",oracle:"o1"};
+const save=()=>store.set("state",S);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function hash(str){let h=2166136261;for(const c of str){h^=c.codePointAt(0);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){let s=seed||1;return()=>{s^=s<<13;s^=s>>>17;s^=s<<5;return((s>>>0)%100000)/100000}}
+function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2200)}
+
+function zodiac(d){const m=d.getMonth(),day=d.getDate();return day<=ZOD[m][1]?ZOD[m][0]:ZOD[m+1][0]}
+function personaText(){
+  if(!S.birth)return "";
+  const d=new Date(S.birth+"T00:00:00");if(isNaN(d))return "";
+  const [dn,col]=DAYS[d.getDay()];
+  const age=Math.floor((Date.now()-d)/3.15576e10);
+  return `${S.name||"คุณ"} เกิดวัน${dn} (สีประจำวัน${col}) ราศี${zodiac(d)} อายุ ${age} ปี${S.status?" สถานะ"+S.status:""}`;
+}
+
+// ---------- render ----------
+function renderCoins(){
+  document.body.classList.toggle("pro",!!S.topped);
+  $("coinN").textContent=S.coins;$("coinBig").textContent=S.coins;$("dlgCoins").textContent=S.coins;
+  $("adState").textContent=S.topped?"เติมแล้ว · ปิดโฆษณาถาวร":"เติมครั้งแรก ปิดโฆษณาถาวร";
+  $("packList").innerHTML=PACKS.map((p,i)=>`<button class="pack" data-pack="${i}"><span class="pc">🪙 ${p.n}</span><span class="pt">${p.tag}</span><b>฿${p.price}</b></button>`).join("");
+  renderMethods();renderSpreads();renderPerks();
+}
+function tierOf(paid){let t=null;TIERS.forEach(x=>{if(paid>=x.at)t=x});return t}
+function themeUnlocked(id){const t=THEMES.find(x=>x.id===id);return t&&S.paid>=t.at}
+function applyTheme(){if(!themeUnlocked(S.theme))S.theme="classic";THEMES.forEach(t=>document.body.classList.toggle("cb-"+t.id,t.id===S.theme))}
+function renderPerks(){
+  applyTheme();
+  const cur=tierOf(S.paid),nx=TIERS.find(t=>S.paid<t.at);
+  $("tierBox").innerHTML=`<div class="tier-head"><span class="k">ระดับของคุณ</span><b>${cur?cur.name:"ผู้มาเยือน"}</b><span class="u">เติมสะสม ฿${S.paid.toLocaleString("th-TH")}</span></div>
+   ${nx?`<div class="meter"><i style="width:${Math.round(S.paid/nx.at*100)}%"></i></div><p class="tier-next">เติมอีก <b>฿${(nx.at-S.paid).toLocaleString("th-TH")}</b> เป็น<b>${nx.name}</b> รับตั๋ว ${TICKET_NAME[nx.ticket[0]]}${nx.ticket[1]>1?" ×"+nx.ticket[1]:""} ฟรี + ธีมไพ่${THEMES.find(t=>t.id===nx.theme).name}</p>`:`<p class="tier-next">ถึงระดับสูงสุดแล้ว ปลดล็อกครบทุกธีม</p>`}
+   <div class="tiers">${TIERS.map(t=>`<div class="tier${S.paid>=t.at?" got":""}"><span class="tb">${S.paid>=t.at?"✓":"฿"+t.at}</span><div><b>${t.name}</b><span>🎟 ${TICKET_NAME[t.ticket[0]]}${t.ticket[1]>1?" ×"+t.ticket[1]:""} · 🎴 ธีม${THEMES.find(x=>x.id===t.theme).name}</span></div></div>`).join("")}</div>`;
+  const tk=Object.entries(S.tickets).filter(([k,n])=>n>0);
+  $("ticketBox").innerHTML=tk.length?tk.map(([k,n])=>`<div class="ticket"><span>🎟</span><div><b>${TICKET_NAME[k]}</b><span>ใช้อัตโนมัติเมื่อเลือกแบบนี้</span></div><em>×${n}</em></div>`).join(""):`<div class="empty">ยังไม่มีตั๋ว เติมสะสมครบ ฿99 รับตั๋วแรกฟรี</div>`;
+  $("themeBox").innerHTML=THEMES.map(t=>{const ok=themeUnlocked(t.id);return `<button class="tp${t.id===S.theme?" on":""}${ok?"":" locked"}" data-theme="${t.id}"><div class="face back cb-${t.id}"></div><b>${t.name}</b><span>${ok?(t.id===S.theme?"ใช้อยู่":"แตะเพื่อใช้"):"🔒 เติมสะสม ฿"+t.at}</span></button>`}).join("");
+}
+function ticketFor(){if(S.method==="lenormand")return (S.tickets.len||0)>0?"len":null;const sp=curSpread();return (S.tickets[sp.id]||0)>0?sp.id:null}
+function renderProfile(){
+  $("pName").value=S.name;$("pBirth").value=S.birth;$("pTime").value=S.time;$("pStatus").value=S.status;
+  $("concerns").innerHTML=CONCERNS.map(c=>`<button class="chip" aria-pressed="${c===S.concern}" data-c="${c}">${c}</button>`).join("");
+  const t=personaText();const el=$("persona");el.hidden=!t;el.textContent=t?"ระบบจะอ่านไพ่ให้: "+t:"";
+  $("greet").textContent=S.name?`สวัสดี ${S.name}`:"สวัสดี";
+  renderExamples();
+}
+function renderMethods(){
+  $("methods").innerHTML=METHODS.map(m=>`<button class="method" aria-pressed="${m.id===S.method}" data-m="${m.id}"><b>${m.name}</b><span>${m.desc}</span></button>`).join("");
+}
+function renderRanges(){
+}
+function curSpread(){if(S.method==="lenormand")return{id:"chain",cost:LEN_COST,pos:[]};const l=SPREADS[S.method];return l.find(s=>s.id===S.spreads[S.method])||l[0]}
+function renderSpreads(){
+  const box=$("spreadBox"),sp=curSpread();
+  if(S.method==="lenormand"){box.innerHTML=fitBox()+`<div class="chain-info"><b>เปิดทีละใบ ถามต่อได้</b><br>ใบใหม่จะขยายความจากใบก่อน เปิดได้สูงสุด ${LEN_MAX} ใบ · ใบละ ${LEN_COST} 🪙</div>`;
+    $("drawBtn").textContent=ticketFor()?`เริ่มสับไพ่ · ใช้ตั๋วฟรี 🎟 (7 ใบ)`:`เริ่มสับไพ่ · ใบละ ${LEN_COST} 🪙`;return}
+  box.innerHTML=fitBox()+`<p class="lbl">รูปแบบการวางไพ่</p><div class="spreads">${SPREADS[S.method].map(s=>`<button class="spread-opt" aria-pressed="${s.id===sp.id}" data-s="${s.id}"><b>${s.name}</b><em>${s.cost?s.cost+" 🪙":"ฟรี"}</em><span>${esc(s.sub)}</span></button>`).join("")}</div><p class="spread-fit">💡 <b>${sp.name} ${esc(sp.sub)}</b> เหมาะกับ${FIT[sp.id]||""}</p>`;
+  $("drawBtn").textContent=ticketFor()?`เริ่มสับไพ่ · ใช้ตั๋วฟรี 🎟 (เหลือ ${S.tickets[sp.id]})`:`เริ่มสับไพ่ · ${sp.cost?sp.cost+" 🪙":"ฟรี"}`;
+}
+function renderExamples(){
+  $("topics").innerHTML=TOPICS.map(c=>`<button class="chip" aria-pressed="${c===topic}" data-t="${c}">${c}</button>`).join("");
+  const ex=topic?EXAMPLES[topic]:[EXAMPLES["คนรอบตัว"][0],EXAMPLES["งาน"][0],EXAMPLES["ความรัก"][0],EXAMPLES["การเงิน"][0]];
+  $("examples").innerHTML=(ex||[]).map(e=>`<button class="ex">${esc(e)}</button>`).join("");
+}
+function cardFace(c,method,rev){
+  return `<div class="num">${method==="tarot"?c[0]:method==="oracle"?"Oracle":"No."+c[0]}</div><div class="sym">${c[2]}</div><div class="nm">${esc(c[1])}${rev?"<br><small>(Reversed)</small>":""}</div>`;
+}
+
+// ---------- daily ----------
+function daily(){
+  const today=todayStr();
+  const r=rng(hash(today+S.name+S.birth));
+  const c=TAROT[Math.floor(r()*TAROT.length)];const rev=r()<0.3;
+  $("dailyFront").className="face front"+(rev?" rev":"");
+  $("dailyFront").innerHTML=cardFace(c,"tarot",rev);
+  const flipped=store.get("daily")===today+S.name;
+  $("dailyCard").classList.toggle("flipped",flipped);
+  const showText=()=>{
+    const [dn,col]=S.birth?DAYS[new Date(S.birth+"T00:00:00").getDay()]:[null,null];
+    $("dailyText").innerHTML=`<h2>${esc(c[1])}${rev?" (Reversed)":""}</h2><div class="m">${esc(rev?c[4]:c[3])}</div>
+    <div class="tip">${S.concern?"เรื่อง"+esc(S.concern)+": ":""}${rev?"วันนี้ค่อย ๆ ทำ อย่าเพิ่งตัดสินใจเรื่องใหญ่":"วันนี้เหมาะกับการลงมือ"}${col?" · ใส่สี"+col+"เสริมดวง":""}</div>`;
+    $("dailyHint").textContent="ไพ่ใหม่ทุกเช้า";
+  };
+  if(flipped)showText();
+  $("dailyCard").onclick=()=>{ if($("dailyCard").classList.contains("flipped"))return;
+    $("dailyCard").classList.add("flipped");store.set("daily",today+S.name);setTimeout(showText,450);};
+}
+
+// ---------- reading ----------
+let sampleFn=null;
+if(window.claude&&window.claude.use){window.claude.use("sample").then(s=>{sampleFn=s}).catch(()=>{})}
+let ctrl=null;
+const RM=()=>matchMedia("(prefers-reduced-motion:reduce)").matches;
+let flow=null;
+function setStep(n){$("steps").querySelectorAll("li").forEach((li,i)=>{li.classList.toggle("on",i===n-1);li.classList.toggle("done",i<n-1)})}
+function rnd(n){const a=new Uint32Array(1);crypto.getRandomValues(a);return a[0]%n}
+function deckOf(m){return m==="tarot"?TAROT:m==="lenormand"?LENOR:ORACLE}
+function meaningOf(x,m){return m==="tarot"?(x.rev?x.c[4]:x.c[3]):x.c[3]}
+function methodName(m){return METHODS.find(x=>x.id===m).name}
+function spend(n){
+  if(S.coins<n){toast(`เหรียญไม่พอ ต้องใช้ ${n} 🪙`);openUp();return false}
+  if(n){S.coins-=n;save();renderCoins();toast(`ใช้ ${n} เหรียญ · เหลือ ${S.coins}`)}
+  return true;
+}
+function slotHTML(i,label){return `<div class="slot"><div class="slot-hole" id="slot${i}"></div><span>${esc(label)}</span></div>`}
+function sizeSlots(){$("slots").classList.toggle("many",flow.pos.length>3)}
+function stackHTML(){let s="";for(let i=0;i<7;i++)s+=`<div class="stk" style="--i:${i}"><div class="face back"></div>${i===6?'<span class="dot"></span>':""}</div>`;return s}
+
+function draw(){
+  const q=$("q").value.trim();
+  if(!q){toast("พิมพ์คำถามก่อนสับไพ่");$("q").focus();return}
+  const m=S.method,sp=curSpread(),chain=m==="lenormand";
+  const tk=ticketFor();
+  if(tk){S.tickets[tk]--;save();renderCoins();toast(`ใช้ตั๋วฟรี ${TICKET_NAME[tk]}`)}
+  else if(chain){if(S.coins<LEN_COST){spend(LEN_COST);return}}
+  else if(!spend(sp.cost))return;
+  if(ctrl)ctrl.abort();
+  flow={topic,freeChain:tk==="len",t0:Date.now(),q,m,sp,chain,pos:chain?["Card 1"]:sp.pos.slice(),picked:[],used:new Set(),order:deckOf(m).map(c=>({c,rev:false})),taps:0,busy:false,texts:[],follows:[]};
+  $("result").hidden=false;$("reading").hidden=true;$("reading").innerHTML="";$("chainBox").hidden=true;$("toMerit").hidden=true;$("againBtn").hidden=true;
+  $("slots").innerHTML=flow.pos.map((p,i)=>slotHTML(i,p)).join("");sizeSlots();
+  setStep(1);
+  $("stack").innerHTML=stackHTML();$("doneShuf").disabled=true;
+  $("pile").hidden=false;$("fan").hidden=true;$("fan").classList.remove("gone","open");
+  $("shufCount").textContent="";
+  $("tableHint").innerHTML="ตั้งจิตถึงคำถาม แล้ว<b>แตะกองไพ่เพื่อสับ</b> สับกี่ครั้งก็ได้จนกว่าจะพอใจ";
+  $("steps").scrollIntoView({behavior:RM()?"auto":"smooth",block:"start"});
+}
+function riffle(a){
+  const cut=Math.floor(a.length/2)+rnd(7)-3;let L=a.slice(0,cut),R=a.slice(cut);
+  if(flow.m==="tarot"&&rnd(2))R=R.map(x=>({c:x.c,rev:!x.rev}));
+  const out=[];while(L.length||R.length){const src=((rnd(2)&&L.length)||!R.length)?L:R;out.push(...src.splice(0,1+rnd(3)))}
+  const k=rnd(out.length);return out.slice(k).concat(out.slice(0,k));
+}
+$("stack").onclick=()=>{
+  if(!flow||!$("fan").hidden||$("pile").hidden)return;
+  flow.order=riffle(flow.order);flow.taps++;
+  const st=$("stack");st.classList.remove("rf");void st.offsetWidth;st.classList.add("rf");
+  $("shufCount").textContent=`สับแล้ว ${flow.taps} ครั้ง`;
+  $("doneShuf").disabled=false;
+  if(flow.taps===1)$("tableHint").innerHTML="สับต่อได้อีก หรือกด <b>สับเสร็จแล้ว</b> เพื่อกางไพ่";
+};
+$("doneShuf").onclick=()=>{
+  if(!flow||!flow.taps)return;
+  $("stack").classList.remove("rf");$("pile").hidden=true;setStep(2);showFan();
+};
+function showFan(){
+  const fan=$("fan");fan.hidden=false;fan.classList.remove("gone","open");
+  const N=flow.order.length,W=64,H=104,R=420;
+  const w=fan.clientWidth||340;
+  const half=Math.min(42,Math.asin(Math.min(.95,(w/2-W/2-8)/(R-H/2)))*180/Math.PI);
+  const droop=R*(1-Math.cos(half*Math.PI/180));
+  fan.style.height=(H+droop+34)+"px";
+  fan.innerHTML=flow.order.map((_,i)=>{const a=N>1?-half+2*half*i/(N-1):0;
+    return `<button class="fan-card${flow.used.has(i)?" picked":""}" data-k="${i}" style="--a:${a.toFixed(2)}deg;--d:${i*12}ms;z-index:${i}" aria-label="ไพ่ใบที่ ${i+1}"><div class="face back"></div></button>`}).join("");
+  requestAnimationFrame(()=>requestAnimationFrame(()=>fan.classList.add("open")));
+  fanHint();
+}
+function fanHint(){
+  if(flow.chain){$("tableHint").innerHTML=`แตะเลือกไพ่ 1 ใบ · <b>ใบที่ ${flow.picked.length+1}</b> จากสูงสุด ${LEN_MAX} (${flow.freeChain?"ฟรี 🎟":LEN_COST+" 🪙"})`;return}
+  const left=flow.pos.length-flow.picked.length;
+  $("tableHint").innerHTML=`แตะเลือกไพ่ที่ดึงดูดใจ · ใบต่อไป: <b>${flow.pos[flow.picked.length]}</b> (เหลือ ${left} ใบ)`;
+}
+$("fan").addEventListener("click",e=>{
+  const b=e.target.closest(".fan-card");
+  if(!b||!flow||flow.busy||b.classList.contains("picked"))return;
+  const idx=flow.picked.length;if(idx>=flow.pos.length)return;
+  if(flow.chain&&!flow.freeChain&&!spend(LEN_COST))return;
+  const k=+b.dataset.k,item=flow.order[k];flow.picked.push(item);flow.used.add(k);flow.busy=true;
+  const slot=$("slot"+idx);
+  const from=b.getBoundingClientRect(),to=slot.getBoundingClientRect();
+  const a=parseFloat(b.style.getPropertyValue("--a"))||0;
+  b.classList.add("picked");
+  const place=()=>{
+    slot.innerHTML=`<div class="card sm placed"><div class="card-inner"><div class="face back"></div><div class="face front${item.rev?" rev":""}">${cardFace(item.c,flow.m,item.rev)}</div></div></div>`;
+    flow.busy=false;
+    if(flow.chain)revealChain();else if(flow.picked.length===flow.pos.length)reveal();else fanHint();
+  };
+  if(RM()){place();return}
+  const fly=document.createElement("div");fly.className="fly";fly.innerHTML='<div class="face back"></div>';
+  const fx=from.left+from.width/2,fy=from.top+from.height/2;
+  fly.style.left=(fx-32)+"px";fly.style.top=(fy-52)+"px";document.body.appendChild(fly);
+  const tx=to.left+to.width/2-fx,ty=to.top+to.height/2-fy,sc=to.width/64;
+  const anim=fly.animate([
+    {transform:`translate(0,0) rotate(${a}deg)`},
+    {transform:`translate(${tx*.45}px,${ty*.45-50}px) rotate(${a*.4+(tx>0?10:-10)}deg) scale(${(1+sc)/2})`,offset:.5},
+    {transform:`translate(${tx}px,${ty}px) rotate(0deg) scale(${sc})`}],{duration:700,easing:"cubic-bezier(.3,.7,.2,1)"});
+  anim.onfinish=()=>{fly.remove();place()};
+});
+function saveReading(f){
+  f.hid=f.hid||("r"+f.t0.toString(36)+rnd(1e6).toString(36));
+  const old=HIST.find(x=>x.id===f.hid)||{};
+  upsertHistory({rate:old.rate,note:old.note,rt:old.rt,cat:f.topic&&f.topic!=="อื่น ๆ"?f.topic:(classify(f.q)||"อื่น ๆ"),id:f.hid,t:f.t0,m:f.m,sp:f.chain?"เปิดต่อเนื่อง":`${f.sp.name} · ${f.sp.sub}`,q:f.q,concern:f.topic||"",
+    cards:f.picked.map((x,i)=>({n:x.c[1],s:x.c[2],rev:!!x.rev,p:f.pos[i]})),
+    follows:(f.follows||[]).map(x=>x||""),
+    text:f.texts.map((t,i)=>f.chain?`ใบที่ ${i+1} · ${f.picked[i].c[1]}${f.follows[i]?` (ถามต่อ: ${f.follows[i]})`:""}\n${t}`:t).join("\n\n").slice(0,5000)});
+}
+function hideFan(){const fan=$("fan");fan.classList.add("gone");setTimeout(()=>{fan.hidden=true},320)}
+function disc(q){return `<div class="disc">คำทำนายเพื่อความบันเทิง${curTopic()==="สุขภาพ"||/ป่วย|เจ็บ|โรค|นอนไม่หลับ|ซึมเศร้า/.test(q)?" เรื่องสุขภาพควรปรึกษาแพทย์":""}</div>`}
+async function runAI(el,prompt,fallback){
+  if(!sampleFn){el.textContent=fallback;return fallback}
+  el.textContent="กำลังอ่านไพ่...";
+  if(!ctrl||ctrl.signal.aborted)ctrl=new AbortController();
+  try{
+    const res=await sampleFn(prompt,{signal:ctrl.signal,cache:false,onText:({text})=>{el.textContent=text}});
+    const t=res.text.replace(/\*\*/g,"");el.textContent=t;return t;
+  }catch(e){if(e&&e.code==="cancelled")return "";el.textContent=fallback;return fallback}
+}
+
+// fixed spreads (tarot / oracle)
+function reveal(){
+  setStep(3);hideFan();
+  $("tableHint").textContent="กำลังเปิดไพ่...";
+  const cards=[...$("slots").querySelectorAll(".placed")];
+  const gap=cards.length>5?260:500;
+  cards.forEach((c,i)=>setTimeout(()=>c.classList.add("flipped"),RM()?0:350+i*gap));
+  setTimeout(()=>{
+    $("tableHint").textContent=flow.pos.length>1?"ไพ่ของคุณเปิดครบแล้ว":"ไพ่ของคุณ";
+    $("reading").hidden=false;renderMerit();$("toMerit").hidden=false;$("againBtn").hidden=false;
+    readSpread();
+  },RM()?0:400+cards.length*gap);
+}
+function readSpread(){
+  const {q,m,picked,pos}=flow,n=picked.length;
+  $("reading").innerHTML=`<div class="read-block"><h3>คำทำนายจากไพ่${methodName(m)} · ${n} ใบ</h3><div class="rt"></div>${disc(q)}</div>`;
+  const cardDesc=picked.map((x,i)=>`${pos[i]} (${POS_TH[pos[i]]||""}): ${x.c[1]}${x.rev?" (Reversed)":""} — ความหมายพื้นฐาน: ${meaningOf(x,m)}`).join("\n");
+  const len=n<=3?"120-180":n<=5?"200-280":"320-420";
+  const style=m==="oracle"?"ไพ่ออราเคิลเน้นข้อความให้กำลังใจและแนวทาง ไม่ทำนายเหตุการณ์แบบตายตัว":"อ่านแบบทาโรต์ โยงความหมายแต่ละตำแหน่งเข้าหากัน";
+  const prompt=`คุณคือหมอดูไพ่ที่อบอุ่น พูดตรง และให้คำแนะนำที่ทำได้จริง ตอบเป็นภาษาไทยเท่านั้น
+ข้อมูลผู้ถาม: ${personaText()||"ไม่ได้ให้ข้อมูลส่วนตัว"}
+${flow.topic?`หมวดที่ผู้ถามเลือก: ${flow.topic}\n`:""}ตอบตามคำถามจริง ถ้าคำถามเป็นเรื่องของคนอื่น (เช่น เขา เธอ เพื่อน คนในครอบครัว) ให้อ่านไพ่ในมุมของคนนั้น และใช้ข้อมูลผู้ถามเป็นบริบทประกอบเท่านั้น
+ศาสตร์: ${methodName(m)} (${style}) | ช่วงเวลา: ดูจากคำถาม ถ้าไม่ระบุให้มองช่วง 1-3 เดือนข้างหน้า
+คำถาม: "${q}"
+ไพ่ที่เปิดได้ (เรียกชื่อไพ่เป็นภาษาอังกฤษตามเดิม):
+${cardDesc}
+
+เขียนคำทำนาย ${len} คำ แบ่งเป็น 3 ส่วนโดยใช้หัวข้อธรรมดา (ไม่ใช้ markdown ไม่ใช้ **):
+ภาพรวม (ตอบคำถามตรง ๆ โดยอ้างถึงสถานการณ์ของผู้ถาม)
+ไพ่บอกอะไร (อธิบายไพ่ทีละตำแหน่ง โยงกับคำถาม)
+สิ่งที่ควรทำต่อ (2 ข้อที่ลงมือได้จริง)
+ห้ามฟันธงเรื่องสุขภาพ การเงิน หรือกฎหมายแบบเด็ดขาด`;
+  const fb=`ภาพรวม\nสำหรับคำถาม${flow.topic?"เรื่อง"+flow.topic:""}ของ${S.name||"คุณ"} ไพ่ชี้ว่าคำตอบอยู่ที่การตัดสินใจของคุณเอง\n\n${picked.map((x,i)=>`• ${pos[i]}: ${x.c[1]}${x.rev?" (Reversed)":""} หมายถึง ${meaningOf(x,m)}`).join("\n")}\n\nสิ่งที่ควรทำต่อ\nจดสิ่งที่ควบคุมได้ 3 อย่าง แล้วเริ่มทำอย่างแรกภายในสัปดาห์นี้`;
+  const f=flow;
+  runAI($("reading").querySelector(".rt"),prompt,fb).then(t=>{if(t&&f===flow){f.texts=[t];saveReading(f)}});
+}
+
+// Lenormand chain
+function revealChain(){
+  setStep(3);hideFan();
+  const n=flow.picked.length,x=flow.picked[n-1];
+  const card=$("slot"+(n-1)).querySelector(".placed");
+  setTimeout(()=>card.classList.add("flipped"),RM()?0:250);
+  setTimeout(async()=>{
+    $("tableHint").textContent=`เปิดแล้ว ${n} จากสูงสุด ${LEN_MAX} ใบ`;
+    $("reading").hidden=false;
+    const follow=flow.follows[n-1]||"";
+    const blk=document.createElement("div");blk.className="read-block";
+    blk.innerHTML=`<h3>ใบที่ ${n} · ${esc(x.c[1])}</h3>${follow?`<p class="fq">ถามต่อ: “${esc(follow)}”</p>`:""}<div class="rt"></div>${n===1?disc(flow.q):""}`;
+    $("reading").appendChild(blk);
+    if(n>1)blk.scrollIntoView({behavior:RM()?"auto":"smooth",block:"start"});
+    const prev=flow.picked.slice(0,n-1).map((y,i)=>`ใบที่ ${i+1}: ${y.c[1]} (${y.c[3]})${flow.follows[i]?` — ถามว่า "${flow.follows[i]}"`:""}`).join("\n")||"ยังไม่มี";
+    const last=flow.texts.length?flow.texts[flow.texts.length-1].slice(0,500):"";
+    const task=n===1?"ตอบคำถามหลักโดยตรง 80-120 คำ แล้วบอกว่าใบต่อไปจะช่วยขยายเรื่องไหนได้"
+      :n===LEN_MAX?"นี่คือใบสุดท้าย อ่านใบนี้คู่กับใบก่อนหน้า แล้วสรุปภาพรวมของทั้ง 7 ใบ พร้อมคำแนะนำ 2 ข้อ 120-180 คำ"
+      :`อ่านใบนี้คู่กับใบที่ ${n-1} ตามหลักไพ่คู่ของเลอนอร์มองด์ อธิบายว่าใบใหม่ขยายความหรือเปลี่ยนภาพจากใบก่อนอย่างไร${follow?" และตอบคำถามต่อเนื่องให้ตรง":""} 70-120 คำ จบด้วยคำแนะนำ 1 ข้อ`;
+    const prompt=`คุณคือหมอดูไพ่เลอนอร์มองด์ที่อบอุ่น พูดตรง ตอบเป็นภาษาไทยเท่านั้น ไม่ใช้ markdown ไม่ใช้ **
+ข้อมูลผู้ถาม: ${personaText()||"ไม่ได้ให้ข้อมูลส่วนตัว"}
+${flow.topic?`หมวดที่ผู้ถามเลือก: ${flow.topic}\n`:""}ตอบตามคำถามจริง ถ้าคำถามเป็นเรื่องของคนอื่น (เช่น เขา เธอ เพื่อน คนในครอบครัว) ให้อ่านไพ่ในมุมของคนนั้น และใช้ข้อมูลผู้ถามเป็นบริบทประกอบเท่านั้น
+คำถามหลัก: "${flow.q}"
+ไพ่ที่เปิดไปแล้ว:
+${prev}
+${last?`คำทำนายใบก่อนหน้า: ${last}\n`:""}${follow?`คำถามต่อเนื่องจากผู้ถาม: "${follow}"\n`:""}ไพ่ใบใหม่ (ใบที่ ${n}): ${x.c[1]} — ความหมายพื้นฐาน: ${x.c[3]}
+งาน: ${task}
+เรียกชื่อไพ่เป็นภาษาอังกฤษ ห้ามฟันธงเรื่องสุขภาพ การเงิน หรือกฎหมายแบบเด็ดขาด`;
+    const fb=n===1?`${x.c[1]} หมายถึง ${x.c[3]} สำหรับคำถามของคุณ ไพ่ใบนี้คือแก่นของเรื่อง`
+      :`${x.c[1]} ต่อจาก ${flow.picked[n-2].c[1]}: ${x.c[3]} ขยายภาพจากใบก่อนว่าเรื่องกำลังเคลื่อนไปทางนี้`;
+    renderMerit();$("toMerit").hidden=false;$("againBtn").hidden=false;$("chainBox").hidden=true;
+    const t=await runAI(blk.querySelector(".rt"),prompt,fb);
+    flow.texts.push(t);if(t)saveReading(flow);
+    if(n<LEN_MAX){$("chainBox").hidden=false;$("nextCard").textContent=`เปิดใบที่ ${n+1} · ${flow.freeChain?"ฟรีจากตั๋ว 🎟":LEN_COST+" 🪙"}`;}
+    else $("tableHint").textContent=`เปิดครบ ${LEN_MAX} ใบแล้ว`;
+  },RM()?0:900);
+}
+$("nextCard").onclick=()=>{
+  if(!flow||!flow.chain)return;
+  if(!flow.freeChain&&S.coins<LEN_COST){spend(LEN_COST);return}
+  const n=flow.picked.length;
+  flow.follows[n]=$("followQ").value.trim();$("followQ").value="";
+  flow.pos.push(`Card ${n+1}`);
+  $("slots").insertAdjacentHTML("beforeend",slotHTML(n,`Card ${n+1}`));sizeSlots();
+  $("chainBox").hidden=true;setStep(2);showFan();
+  $("steps").scrollIntoView({behavior:RM()?"auto":"smooth",block:"start"});
+};
+$("againBtn").onclick=()=>{$("result").hidden=true;flow=null;$("q").value="";window.scrollTo(0,0);setTimeout(()=>$("q").focus(),300)};
+
+// ---------- merit ----------
+const IMPACT={
+ "มูลนิธิทุนการศึกษาเพื่อน้อง":{u:[20,"มื้อกลางวันของน้อง"],p:[[39,"สมุดและดินสอ 1 ชุด ให้น้อง 1 คนพร้อมไปเรียน"],[99,"ข้าวกลางวันน้อง 1 คน ครบ 5 วันเรียน"],[299,"ชุดนักเรียนใหม่ 1 ชุด"],[999,"ค่ารถไปโรงเรียนของน้อง 1 เทอม"]]},
+ "มูลนิธิห้องสมุดชุมชน":{u:[35,"เล่มหนังสือเข้าห้องสมุด"],p:[[39,"หนังสือนิทาน 1 เล่ม ให้เด็กยืมอ่านได้หลายสิบคน"],[99,"หนังสือ 3 เล่มเข้าห้องสมุดชุมชน"],[299,"เบาะและชั้นวาง สำหรับมุมอ่านหนังสือ"],[999,"หนังสือ 30 เล่ม เปิดมุมอ่านใหม่ 1 แห่ง"]]},
+ "มูลนิธิบ้านพักผู้สูงอายุ":{u:[33,"มื้ออาหารของคุณตาคุณยาย"],p:[[39,"ผ้าอ้อมผู้ใหญ่ 1 วัน"],[99,"อาหารครบ 3 มื้อ ให้คุณตาคุณยาย 1 คน"],[299,"ยาและวิตามิน 1 เดือน"],[999,"ค่าดูแลผู้สูงอายุ 1 คน ตลอด 1 สัปดาห์"]]},
+ "มูลนิธิช่วยเหลือสัตว์จร":{u:[13,"มื้ออาหารของน้องหมาแมว"],p:[[39,"อาหาร 3 มื้อ ให้น้องหมาแมวจร"],[99,"วัคซีนพิษสุนัขบ้า 1 เข็ม"],[299,"ร่วมค่าทำหมัน 1 ตัว ลดลูกหมาแมวถูกทิ้ง"],[999,"ค่ารักษาน้องที่ป่วยหรือถูกรถชน 1 ตัว"]]},
+ "มูลนิธิธนาคารอาหาร":{u:[25,"มื้ออาหาร"],p:[[39,"ข้าวสาร 1 กิโลกรัม"],[99,"อาหารครบ 1 วัน สำหรับครอบครัว 1 ครอบครัว"],[299,"ถุงยังชีพ 1 ถุง"],[999,"อาหาร 1 สัปดาห์ สำหรับครอบครัว 1 ครอบครัว"]]},
+ "กองทุนบูรณะวัดชนบท":{u:[8,"ก้อนอิฐ"],p:[[39,"อิฐ 5 ก้อน ร่วมสร้างกำแพงวัด"],[99,"ปูนซีเมนต์ 1 ถุง"],[299,"กระเบื้องหลังคา 10 แผ่น"],[999,"ค่าช่างซ่อมโบสถ์ 1 วัน"]]},
+ "มูลนิธิเพื่อผู้ป่วยยากไร้":{u:[40,"เที่ยวรถไปโรงพยาบาล"],p:[[39,"ค่ารถไปโรงพยาบาล 1 เที่ยว"],[99,"ยาพื้นฐาน 1 สัปดาห์"],[299,"ค่าตรวจรักษา 1 ครั้ง"],[999,"อุปกรณ์ช่วยเดิน เช่น ไม้เท้าหรือวอล์กเกอร์ 1 ชิ้น"]]},
+ "กองทุนรถเข็นผู้พิการ":{u:[30,"ชิ้นส่วนซ่อมรถเข็น"],p:[[39,"ยางรถเข็น 1 เส้น"],[99,"เบาะรองนั่งกันแผลกดทับ"],[299,"ค่าซ่อมรถเข็น 1 คัน"],[999,"ร่วมซื้อรถเข็นใหม่ 1 คัน"]]},
+ "มูลนิธิบ้านเด็กกำพร้า":{u:[33,"มื้ออาหารของเด็ก"],p:[[39,"นมให้เด็ก 1 คน ครบ 1 สัปดาห์"],[99,"อาหาร 3 มื้อ ให้เด็ก 1 คน"],[299,"เสื้อผ้าชุดใหม่ 1 ชุด"],[999,"ค่าเรียนพิเศษ 1 เดือน"]]}};
+const WISHES={"งาน":"ขอให้การงานราบรื่น ได้ทำงานที่ใช่","ความรัก":"ขอให้พบรักที่จริงใจ","การเงิน":"ขอให้การเงินคล่องตัว ปลดหนี้ได้","สุขภาพ":"ขอให้ร่างกายแข็งแรง","ครอบครัว":"ขอให้ครอบครัวอบอุ่น เข้าใจกัน","การเรียน":"ขอให้เรียนจบตามเป้า"};
+const LEVELS=[[0,"เมล็ดบัว"],[1,"ใบบัวอ่อน"],[3,"บัวตูม"],[6,"บัวแย้ม"],[10,"บัวบาน"],[20,"บัวทอง"]];
+function meritLevel(n){let i=0;LEVELS.forEach((l,k)=>{if(n>=l[0])i=k});const nx=LEVELS[i+1];
+  return {i,name:LEVELS[i][1],next:nx?nx[1]:null,need:nx?nx[0]-n:0,pct:nx?Math.round((n-LEVELS[i][0])/(nx[0]-LEVELS[i][0])*100):100}}
+function lotusStageSVG(s){
+  const sk="var(--sk)",gold=s>=5;
+  const water=`<path d="M8 90 Q34 84 60 90 T112 90" fill="none" stroke="${sk}" stroke-width="1.3" stroke-linecap="round"/><path d="M26 96 Q46 91 66 96 T100 96" fill="none" stroke="${sk}" stroke-width="1" opacity=".45" stroke-linecap="round"/>`;
+  if(s===0)return `<svg viewBox="0 0 120 100" class="lstage" aria-hidden="true"><ellipse class="petal" cx="60" cy="84" rx="8" ry="5.5" fill="#9A7440" stroke="${sk}" stroke-width="1.2"/><path class="petal" d="M60 79 q-2 -6 2 -9" fill="none" stroke="#5E9A5A" stroke-width="2" stroke-linecap="round"/>${water}</svg>`;
+  let g=`<path d="M26 86 Q60 70 94 86 Q60 93 26 86Z" fill="#7BB477" stroke="${sk}" stroke-width="1.2"/>`;
+  if(s>=2)g+=`<path d="M60 85 Q57 66 60 46" fill="none" stroke="#4E8A4B" stroke-width="3" stroke-linecap="round"/>`;
+  const pet=(a,c,d,w)=>`<g transform="rotate(${a} 60 46)"><path class="petal" style="animation-delay:${d}ms" d="M60 46 C${51-w} 32 ${52-w} 14 60 4 C${68+w} 14 ${69+w} 32 60 46Z" fill="${c}" stroke="${sk}" stroke-width="1.1"/></g>`;
+  const P=gold?["#F6DD94","#F0C964","#E7B24C","#D99A1E"]:["#F7C6D3","#F2A3B9","#EC88A5","#E46F92"];
+  if(s===2)g+=`<path class="petal" d="M60 46 C54 38 55 26 60 18 C65 26 66 38 60 46Z" fill="${P[2]}" stroke="${sk}" stroke-width="1.1"/>`;
+  if(s===3)g+=pet(-28,P[1],0,0)+pet(28,P[1],0,0)+pet(0,P[3],200,-3);
+  if(s>=4)g+=pet(-62,P[0],0,5)+pet(62,P[0],0,5)+pet(-34,P[1],150,2)+pet(34,P[1],150,2)+pet(-12,P[2],300,0)+pet(12,P[2],300,0)+pet(0,P[3],450,-4);
+  const glow=gold?`<circle class="glow" cx="60" cy="34" r="34" fill="var(--gold)" opacity=".4"/>`:"";
+  return `<svg viewBox="0 0 120 100" class="lstage" aria-hidden="true">${glow}${g}${water}</svg>`;
+}
+let chosenFdn=null,amount=99,wishText="";
+function impactOf(a){const im=IMPACT[chosenFdn];if(!im)return"";const pr=im.p.find(x=>x[0]===a);if(pr)return pr[1];
+  const n=Math.floor(a/im.u[0]);return n>=1?`ประมาณ ${n.toLocaleString("th-TH")} ${im.u[1]}`:"ทุกบาทมีความหมาย ร่วมสมทบกับผู้ใจบุญคนอื่น";}
+function renderAmounts(){
+  const im=IMPACT[chosenFdn];
+  $("amounts").innerHTML=im.p.map(x=>`<button class="amt" aria-pressed="${x[0]===amount&&!$("customAmt").value}" data-a="${x[0]}"><b>฿${x[0]}</b><span>${esc(x[1])}</span></button>`).join("");
+  $("impactLine").textContent=amount>0?`฿${amount.toLocaleString("th-TH")} = ${impactOf(amount)}`:"";
+}
+function renderMerit(){
+  const list=FDN[curTopic()]||FDN["งาน"];
+  $("meritWhy").textContent=`ดวงเรื่อง${curTopic()==="อื่น ๆ"?"ทั่วไป":curTopic()}ของคุณ เสริมได้ด้วยการทำบุญเหล่านี้ เลือกแล้วสแกนจ่ายได้ทันที`;
+  $("fdnList").innerHTML=list.map((f,i)=>`<button class="fdn" aria-pressed="false" data-f="${i}"><span class="ic">${f[0]}</span><span><b>${esc(f[1])}</b><span>${esc(f[2])}</span></span></button>`).join("");
+  $("qrbox").classList.remove("show");$("blessing").classList.remove("show");chosenFdn=null;
+}
+function renderQR(){
+  renderAmounts();
+  const N=25,r=rng(hash((chosenFdn||"")+amount));let cells="";
+  const finder=(x,y)=>`<rect x="${x}" y="${y}" width="7" height="7" fill="#111"/><rect x="${x+1}" y="${y+1}" width="5" height="5" fill="#fff"/><rect x="${x+2}" y="${y+2}" width="3" height="3" fill="#111"/>`;
+  const inF=(x,y)=>(x<8&&y<8)||(x>N-9&&y<8)||(x<8&&y>N-9);
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){if(!inF(x,y)&&r()<0.48)cells+=`<rect x="${x}" y="${y}" width="1" height="1" fill="#111"/>`}
+  $("qr").innerHTML=`<svg viewBox="0 0 ${N} ${N}" role="img" aria-label="QR ตัวอย่าง ${esc(chosenFdn)} ${amount} บาท" shape-rendering="crispEdges">${cells}${finder(0,0)}${finder(N-7,0)}${finder(0,N-7)}</svg>
+  <div style="font-weight:600;margin-top:6px">${esc(chosenFdn)} · ฿${amount}</div>`;
+}
+
+// ---------- events ----------
+document.addEventListener("click",e=>{
+  const t=e.target.closest("button");if(!t)return;
+  if(t.dataset.go){go(t.dataset.go);return}
+  if(t.dataset.hf){histF=t.dataset.hf;renderHistory();return}
+  if(t.dataset.theme){if(!themeUnlocked(t.dataset.theme)){toast("เติมสะสมให้ถึงระดับก่อนจึงจะใช้ธีมนี้ได้");openUp();return}S.theme=t.dataset.theme;save();renderPerks();toast("เปลี่ยนธีมไพ่แล้ว");return}
+  if(t.dataset.rate||t.dataset.savenote){
+    const box=t.closest("[data-rid]");const e=box&&HIST.find(x=>x.id===box.dataset.rid);if(!e)return;
+    if(t.dataset.rate){e.rate=t.dataset.rate;e.rt=Date.now();toast(`ประทับตรา “${RATES[e.rate][0]}” แล้ว`)}
+    const ta=box.querySelector(".rnote");if(ta)e.note=ta.value.trim();
+    if(t.dataset.savenote)toast("บันทึกโน้ตแล้ว");
+    upsertHistory(e);justRated=e.id;
+    if(!$("histList").closest(".view").hidden)renderHistory();renderDash();justRated=null;return;
+  }
+  if(t.dataset.del){if(t.dataset.armed){deleteHistory(t.dataset.del);renderHistory();renderDash();toast("ลบแล้ว")}else{t.dataset.armed="1";t.textContent="แตะอีกครั้งเพื่อยืนยันการลบ"}return}
+  if(t.dataset.t){topic=topic===t.dataset.t?null:t.dataset.t;renderExamples();renderMerit();}
+  else if(t.dataset.c){S.concern=t.dataset.c;topic=null;save();renderProfile();daily();renderMerit();}
+  else if(t.dataset.m){S.method=t.dataset.m;save();renderMethods();renderSpreads();}
+  else if(t.dataset.s){S.spreads[S.method]=t.dataset.s;save();renderSpreads();}
+  else if(t.dataset.pack!==undefined){openUp(+t.dataset.pack);}
+  else if(t.classList.contains("ex")){$("q").value=t.textContent;$("q").focus();}
+  else if(t.dataset.f!==undefined){$("fdnList").querySelectorAll(".fdn").forEach(b=>b.setAttribute("aria-pressed",b===t));
+    chosenFdn=(FDN[curTopic()]||FDN["งาน"])[+t.dataset.f][1];$("qrbox").classList.add("show");$("blessing").classList.remove("show");$("customAmt").value="";amount=99;renderQR();}
+  else if(t.dataset.a){amount=+t.dataset.a;$("customAmt").value="";renderQR();}
+  else if(t.dataset.w){wishText=t.dataset.w;$("wishIn").value=wishText;$("certWish").textContent=wishText?`“${wishText}”`:"";}
+  else if(t.dataset.p!==undefined){selPack=+t.dataset.p;renderPacks();}
+  else if(t.hasAttribute("data-upgrade")){openUp();}
+});
+$("drawBtn").onclick=draw;
+let qrT=null;
+$("customAmt").addEventListener("input",()=>{const v=Math.floor(+$("customAmt").value);
+  amount=v>0&&v<=100000?v:0;renderAmounts();clearTimeout(qrT);if(amount)qrT=setTimeout(renderQR,300);});
+function lotusSVG(){
+  const pet=(a,c,d,s)=>`<g transform="rotate(${a} 85 104)"><path class="petal" style="animation-delay:${d}ms" d="M85 104 C${70-s} 80 ${71-s} 46 85 ${24+s} C${99+s} 46 ${100+s} 80 85 104Z" fill="${c}" stroke="var(--sk)" stroke-width="1.2"/></g>`;
+  return `<svg class="lotus" viewBox="0 0 170 124" aria-hidden="true"><circle class="glow" cx="85" cy="70" r="52" fill="var(--gold)" opacity=".4"/>
+  ${pet(-62,"#F7C6D3",0,6)}${pet(62,"#F7C6D3",0,6)}${pet(-34,"#F2A3B9",200,2)}${pet(34,"#F2A3B9",200,2)}${pet(-12,"#EC88A5",400,0)}${pet(12,"#EC88A5",400,0)}${pet(0,"#E46F92",600,-4)}
+  <path d="M30 112 Q57 104 85 112 T140 112" fill="none" stroke="var(--sk)" stroke-width="1.4" stroke-linecap="round"/><path d="M48 119 Q70 113 92 119 T128 119" fill="none" stroke="var(--sk)" stroke-width="1" opacity=".5" stroke-linecap="round"/></svg>`;
+}
+$("donedBtn").onclick=()=>{
+  if(!amount||!chosenFdn){toast("เลือกหรือกรอกจำนวนเงินก่อน");return}
+  const m=store.get("merit")||{total:0,count:0};m.total+=amount;m.count++;store.set("merit",m);
+  const L=meritLevel(m.count),pct=L.pct;
+  const date=new Date().toLocaleDateString("th-TH",{dateStyle:"long"});
+  wishText=WISHES[curTopic()]||"";
+  const wishes=[WISHES[curTopic()],"ขอให้บุญนี้ส่งถึงพ่อแม่","อุทิศให้เจ้ากรรมนายเวร","ขอให้ทุกคนที่ได้รับมีความสุข"].filter(Boolean);
+  $("qrbox").classList.remove("show");
+  const b=$("blessing");
+  b.innerHTML=`${lotusSVG()}
+   <div class="bless-title">สาธุ อนุโมทนาบุญ</div>
+   <p class="bless-impact">บุญ ฿${amount.toLocaleString("th-TH")} ของคุณกลายเป็น<br><b>${esc(impactOf(amount))}</b></p>
+   <p class="sub" style="margin:0">ที่${esc(chosenFdn)}</p>
+   <div class="wish-chips">${wishes.map(w=>`<button class="chip" data-w="${esc(w)}">${esc(w)}</button>`).join("")}</div>
+   <label class="f" style="text-align:left">ตั้งจิตอธิษฐาน<input id="wishIn" maxlength="80" value="${esc(wishText)}"></label>
+   <div class="cert" id="cert">
+     <h4>อนุโมทนาบัตร</h4>
+     <p>ขออนุโมทนาบุญกับ <b>${esc(S.name||"ผู้ใจบุญ")}</b></p>
+     <div class="big">฿${amount.toLocaleString("th-TH")}</div>
+     <p>${esc(chosenFdn)}</p>
+     <p style="font-size:14px">${esc(impactOf(amount))}</p>
+     <p class="wish" id="certWish">“${esc(wishText)}”</p>
+     <p style="font-size:13px;margin-top:10px">${date} · มูใจ</p>
+   </div>
+   <p class="sub" style="font-size:13px;margin:6px 0 0">แคปหน้าจอเก็บไว้หรือแชร์ให้เพื่อนได้</p>
+   <div class="mlevel"><div class="ml-row">${lotusStageSVG(L.i)}<div>ดอกบัวแห่งบุญของคุณ<br><b style="font-size:18px">${L.name}</b></div></div>
+     <div class="meter"><i id="meterBar"></i></div>
+     <span style="font-size:13px;color:var(--muted)">${L.next?`ทำบุญอีก ${L.need} ครั้ง ดอกบัวจะเป็น${L.next}`:"บัวทองเบ่งบานเต็มที่แล้ว"}</span></div>
+   <div class="follow">ภายใน 30 วัน มูลนิธิจะส่งรูปและรายงานมาให้ ว่าเงินของคุณไปถึงใครบ้าง (ฟีเจอร์ในเวอร์ชันจริง)</div>
+   <button class="btn ghost" id="againMerit" style="width:100%;margin-top:14px">ทำบุญอีกครั้ง</button>`;
+  b.classList.add("show");stats();
+  $("wishIn").addEventListener("input",e=>{wishText=e.target.value.trim();$("certWish").textContent=wishText?`“${wishText}”`:"";});
+  $("againMerit").onclick=()=>{b.classList.remove("show");$("qrbox").classList.add("show");renderQR();};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{$("meterBar").style.width=pct+"%"}));
+  b.scrollIntoView({behavior:RM()?"auto":"smooth",block:"start"});
+};
+["pName","pBirth","pTime","pStatus"].forEach(id=>$(id).addEventListener("change",()=>{
+  S.name=$("pName").value.trim();S.birth=$("pBirth").value;S.time=$("pTime").value;S.status=$("pStatus").value;save();renderProfile();daily();}));
+const dlg=$("upgrade");let selPack=1;
+function renderPacks(){
+  $("plans").innerHTML=PACKS.map((p,i)=>`<button class="plan" aria-pressed="${i===selPack}" data-p="${i}"><div><b>🪙 ${p.n} เหรียญ</b><br><span>${p.tag}</span></div><b>฿${p.price}</b></button>`).join("");
+  $("payBtn").textContent=`ชำระ ฿${PACKS[selPack].price} (จำลอง)`;
+  const nx=TIERS.find(t=>S.paid<t.at),after=S.paid+PACKS[selPack].price;
+  $("dlgNudge").innerHTML=nx?(after>=nx.at?`🎉 แพ็กนี้ปลดล็อกระดับ<b>${nx.name}</b> รับตั๋ว ${TICKET_NAME[nx.ticket[0]]} ฟรี + ธีมไพ่ใหม่`:`เติมสะสมอีก ฿${nx.at-S.paid} ปลดล็อก${nx.name} รับตั๋วดูดวงฟรี + ธีมไพ่`):"";
+}
+function openUp(i){if(typeof i==="number")selPack=i;renderPacks();$("dlgCoins").textContent=S.coins;if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")}
+$("coinPill").onclick=()=>openUp();
+$("topBtn").onclick=()=>openUp();
+$("closeUp").onclick=()=>dlg.close();
+$("payBtn").onclick=()=>{const p=PACKS[selPack],first=!S.topped,before=S.paid;S.coins+=p.n;S.topped=true;S.paid+=p.price;
+  const won=TIERS.filter(t=>before<t.at&&S.paid>=t.at);
+  won.forEach(t=>{S.tickets[t.ticket[0]]=(S.tickets[t.ticket[0]]||0)+t.ticket[1]});
+  save();dlg.close();renderCoins();
+  const pill=$("coinPill");pill.classList.remove("pop");void pill.offsetWidth;pill.classList.add("pop");
+  toast(`เติม ${p.n} เหรียญแล้ว${first?" · ปิดโฆษณาแล้ว":""}`);
+  if(won.length)showUnlock(won);};
+function showUnlock(won){
+  const t=won[won.length-1];
+  $("unlockBody").innerHTML=`<div class="ul-card"><div class="face back cb-${t.theme}"></div></div>
+   <h2 style="font-size:24px">🎉 ปลดล็อกระดับ${t.name}</h2>
+   <div class="ul-list">${won.map(w=>`<p>🎟 ตั๋วฟรี <b>${TICKET_NAME[w.ticket[0]]}${w.ticket[1]>1?" ×"+w.ticket[1]:""}</b></p><p>🎴 ธีมไพ่ <b>${THEMES.find(x=>x.id===w.theme).name}</b></p>`).join("")}</div>
+   <button class="btn primary" data-theme="${t.theme}" data-close="1">ใช้ธีมนี้เลย</button>
+   <button class="btn ghost" style="width:100%;margin-top:8px" data-close="1">ไว้ทีหลัง</button>`;
+  const u=$("unlockDlg");if(u.showModal)u.showModal();else u.setAttribute("open","");
+}
+$("unlockDlg").addEventListener("click",e=>{if(e.target.closest("[data-close]"))setTimeout(()=>$("unlockDlg").close(),0)});
+$("resetCoins").onclick=()=>{S.coins=30;S.topped=false;S.paid=0;S.tickets={};S.theme="classic";save();renderCoins();toast("รีเซ็ตเหรียญ ระดับ ตั๋ว และธีม (เดโม)")};
+
+const VIEWS=["home","ask","merit","me","plans","history"];
+const REWARDS=[2,2,3,3,5,5,10];
+const CATS=[["งาน","#E39A1F",/งาน|หัวหน้า|ลาออก|สัมภาษณ์|ออฟฟิศ|อาชีพ|ธุรกิจ|เลื่อนตำแหน่ง|เพื่อนร่วมงาน|บริษัท/],
+ ["ความรัก","#D14D78",/รัก|แฟน|คนคุย|ความสัมพันธ์|แต่งงาน|โสด|เลิก|คู่|จีบ|เนื้อคู่|เขาคิด/],
+ ["การเงิน","#2E8B62",/เงิน|หนี้|ลงทุน|รายได้|หวย|โชคลาภ|ค่าใช้จ่าย|ออม|หุ้น/],
+ ["สุขภาพ","#3A7BD5",/สุขภาพ|ป่วย|นอน|โรค|ผ่าตัด|เครียด|ร่างกาย/],
+ ["ครอบครัว","#8E5BD0",/พ่อ|แม่|ครอบครัว|ลูก|พี่น้อง|ญาติ/],
+ ["การเรียน","#0E9AA7",/เรียน|สอบ|มหาลัย|ปริญญา|ทุน|โรงเรียน/],
+ ["คนรอบตัว","#B5651D",/เขา|เธอ|เค้า|เพื่อน|คนนั้น|น้อง|พี่/],
+ ["อื่น ๆ","#9A93B8",/$^/]];
+function classify(q){const c=CATS.find(c=>c[2].test(q||""));return c?c[0]:null}
+function catOf(e){return e.cat||classify(e.q)||(CATS.some(c=>c[0]===e.concern)?e.concern:"อื่น ๆ")}
+const RATES={hit:["ตรงเป๊ะ","#2E8B62"],part:["ตรงบางส่วน","#C98512"],miss:["ไม่ตรง","#C8456F"]};
+let justRated=null;
+const DOW=["อา","จ","อ","พ","พฤ","ศ","ส"];
+function ckState(){
+  const c=store.get("checkin")||{last:"",streak:0,total:0};
+  const y=new Date();y.setDate(y.getDate()-1);
+  const done=c.last===todayStr(),alive=done||c.last===todayStr(y);
+  return {c,done,streak:alive?c.streak:0};
+}
+function renderCheckin(){
+  const st=ckState(),claimed=st.done?((st.streak-1)%7)+1:st.streak%7,cur=st.done?claimed-1:claimed;
+  const nextR=REWARDS[st.streak%7];
+  $("checkin").innerHTML=`<div class="ck-head"><b>เช็คชื่อรับเหรียญฟรี</b><span>${st.streak?`ติดกัน ${st.streak} วัน 🔥`:"เริ่มสะสมวันนี้"}</span></div>
+   <div class="ck-days">${REWARDS.map((r,i)=>`<div class="ck-day${i<claimed?" got":""}${i===cur?" now":""}">วัน ${i+1}<b>${i<claimed?"✓":r}</b></div>`).join("")}</div>
+   <button class="btn primary" id="ckBtn" style="margin-top:0" ${st.done?"disabled":""}>${st.done?`เช็คชื่อแล้ว · พรุ่งนี้รับ ${nextR} 🪙`:`เช็คชื่อวันนี้ รับ ${REWARDS[st.streak%7]} 🪙`}</button>
+   <p class="ck-note">ขาดวันไหน นับใหม่ตั้งแต่วันที่ 1 · ครบ 7 วันรับใหญ่ 10 🪙</p>`;
+  $("ckBtn").onclick=claimCheckin;
+}
+function claimCheckin(e){
+  const st=ckState();if(st.done)return;
+  const reward=REWARDS[st.streak%7];
+  store.set("checkin",{last:todayStr(),streak:st.streak+1,total:(st.c.total||0)+1});
+  S.coins+=reward;save();renderCoins();
+  const pill=$("coinPill");pill.classList.remove("pop");void pill.offsetWidth;pill.classList.add("pop");
+  const r=e.currentTarget.getBoundingClientRect(),fl=document.createElement("div");
+  fl.className="float-coin";fl.textContent=`+${reward} 🪙`;fl.style.left=(r.left+r.width/2-30)+"px";fl.style.top=(r.top-10)+"px";
+  document.body.appendChild(fl);setTimeout(()=>fl.remove(),1100);
+  toast(`เช็คชื่อวันที่ ${(st.streak%7)+1} รับ ${reward} เหรียญ`);renderDash();
+}
+function stampHTML(r,isNew){const R=RATES[r];return R?`<span class="stamp${isNew?" new":""}" style="--sc:${R[1]}">${R[0]}</span>`:""}
+function stampBtns(e){return `<div class="stamps">${Object.entries(RATES).map(([k,v])=>`<button class="stamp-btn${e.rate===k?" on":""}" style="--sc:${v[1]}" data-rate="${k}">${v[0]}</button>`).join("")}</div>`}
+function histItem(e){
+  const d=new Date(e.t).toLocaleString("th-TH",{dateStyle:"medium",timeStyle:"short"});
+  const fresh=justRated===e.id;
+  return `<details class="hist" data-rid="${esc(e.id)}"${fresh?" open":""}>${stampHTML(e.rate,fresh)}<summary><div class="h-top"><span class="h-m">${esc(methodName(e.m))} · ${esc(e.sp||"")}</span><span>${d}</span></div>
+    <div class="h-q"><span class="cat-tag">${esc(catOf(e))}</span>${esc(e.q)}</div>
+    <div class="h-cards">${(e.cards||[]).map(c=>`${esc(c.s||"")} ${esc(c.n)}${c.rev?" (R)":""}`).join(" · ")}</div>${e.note?`<div class="h-note">📝 ${esc(e.note)}</div>`:""}</summary>
+    <div class="h-text">${esc(e.text||"")}</div>
+    <div class="rate-box"><p class="rate-q">${e.rate?"ประทับตราแล้ว เปลี่ยนได้":"เรื่องเกิดขึ้นแล้ว คำทำนายนี้ตรงไหม?"}</p>${stampBtns(e)}
+      <textarea class="rnote" maxlength="300" placeholder="จดโน้ตไว้ เช่น เกิดอะไรขึ้นจริง">${esc(e.note||"")}</textarea>
+      <button class="btn ghost" data-savenote="1" style="padding:8px 14px;font-size:15px">บันทึกโน้ต</button></div>
+    <button class="link danger" data-del="${esc(e.id)}">ลบรายการนี้</button></details>`;
+}
+let histF="all";
+function renderHistory(){
+  const list=HIST.filter(e=>histF==="all"||e.m===histF||(histF==="pending"&&!e.rate));
+  $("histCount").textContent=`ทั้งหมด ${HIST.length} ครั้ง · แตะรายการเพื่ออ่านคำทำนาย ประทับตรา และจดโน้ต`;
+  $("histFilter").innerHTML=[["all","ทั้งหมด"],["pending","รอประทับตรา"],...METHODS.map(m=>[m.id,m.name])].map(([k,n])=>`<button class="chip" aria-pressed="${k===histF}" data-hf="${k}">${n}</button>`).join("");
+  $("histList").innerHTML=list.length?list.map(histItem).join(""):`<div class="empty">ยังไม่มีรายการในหมวดนี้</div>`;
+}
+function donut(counts,total){
+  let off=0;const C=2*Math.PI*40;
+  const segs=counts.filter(c=>c.n).map(c=>{const len=c.n/total*C;const s=`<circle cx="60" cy="60" r="40" fill="none" stroke="${c.color}" stroke-width="18" stroke-dasharray="${len.toFixed(2)} ${(C-len).toFixed(2)}" stroke-dashoffset="${(-off).toFixed(2)}" transform="rotate(-90 60 60)"/>`;off+=len;return s}).join("");
+  return `<svg viewBox="0 0 120 120" class="donut" role="img" aria-label="สัดส่วนหมวดคำถาม"><circle cx="60" cy="60" r="40" fill="none" stroke="var(--line)" stroke-width="18"/>${segs}<text x="60" y="58" text-anchor="middle" class="d-num">${total}</text><text x="60" y="75" text-anchor="middle" class="d-lbl">คำถาม</text></svg>`;
+}
+function renderDash(){
+  renderCheckin();
+  const st=ckState(),m=store.get("merit")||{total:0,count:0},L=meritLevel(m.count);
+  const rated=HIST.filter(e=>e.rate),acc=rated.length?Math.round(rated.reduce((s,e)=>s+(e.rate==="hit"?1:e.rate==="part"?.5:0),0)/rated.length*100):null;
+  const stat=(k,v,u,go)=>`<button class="stat"${go?` data-go="${go}"`:""}><span class="k">${k}</span><span class="v">${v}</span><span class="u">${u}</span></button>`;
+  $("statGrid").innerHTML=stat("🪙 เหรียญคงเหลือ",S.coins,"เหรียญ","plans")+stat("🔮 ดูดวงแล้ว",HIST.length,"ครั้ง","history")
+    +stat("🔥 เช็คชื่อติดกัน",st.streak,"วัน","")+stat("📮 รอประทับตรา",HIST.filter(e=>!e.rate).length,"คำทำนาย","history");
+  // lotus
+  $("lotusBox").innerHTML=`<div class="lotus-card">${lotusStageSVG(L.i)}<div class="lc-txt"><span class="k">ดอกบัวแห่งบุญ</span><b>${L.name}</b>
+    <div class="meter"><i style="width:${L.pct}%"></i></div><span class="u">${m.count?(L.next?`ทำบุญอีก ${L.need} ครั้ง จะเป็น${L.next}`:"บัวทองเบ่งบานเต็มที่แล้ว"):"ทำบุญครั้งแรกเพื่อให้เมล็ดบัวงอก"}</span>
+    <div class="stages">${LEVELS.map((l,i)=>`<span class="${i<=L.i?"on":""}" title="${l[1]}"></span>`).join("")}</div></div></div>`;
+  // pending stamps
+  const pend=HIST.filter(e=>!e.rate).slice(0,2);
+  const cnt=k=>rated.filter(e=>e.rate===k).length;
+  $("pendBox").innerHTML=(pend.length?pend.map(e=>`<div class="pend" data-rid="${esc(e.id)}"><div class="h-top"><span class="h-m">${esc(methodName(e.m))}</span><span>${new Date(e.t).toLocaleDateString("th-TH",{dateStyle:"medium"})}</span></div><div class="h-q">${esc(e.q)}</div>${stampBtns(e)}</div>`).join("")
+    :`<div class="empty">${HIST.length?"ประทับตราครบทุกคำทำนายแล้ว":"ยังไม่มีคำทำนาย"}</div>`)
+    +(rated.length?`<div class="stamp-sum">${Object.entries(RATES).map(([k,v])=>`<span style="--sc:${v[1]}">${v[0]} <b>${cnt(k)}</b></span>`).join("")}</div>`:"");
+  // categories
+  const counts=CATS.map(c=>({name:c[0],color:c[1],n:HIST.filter(e=>catOf(e)===c[0]).length}));
+  const total=HIST.length;
+  $("catBox").innerHTML=total?`<div class="cat-wrap">${donut(counts,total)}<div class="legend">${counts.filter(c=>c.n).sort((a,b)=>b.n-a.n).map(c=>`<div><i style="background:${c.color}"></i><span>${c.name}</span><b>${c.n}</b><em>${Math.round(c.n/total*100)}%</em></div>`).join("")}</div></div>`
+    :`<div class="empty">ถามคำถามแรก แล้วจะเห็นว่าคุณกังวลเรื่องไหนบ่อยที่สุด</div>`;
+  // 7 days
+  const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d)}
+  const dc=days.map(d=>{const s=todayStr(d);return HIST.filter(e=>todayStr(new Date(e.t))===s).length});
+  const mx=Math.max(1,...dc);
+  $("bars").innerHTML=days.map((d,i)=>`<div class="dbar${i===6?" today":""}"><em>${dc[i]||""}</em><i style="height:${Math.round(dc[i]/mx*72)}%"></i><span>${i===6?"วันนี้":DOW[d.getDay()]}</span></div>`).join("");
+  $("recent").innerHTML=HIST.length?HIST.slice(0,3).map(histItem).join(""):`<div class="empty">ยังไม่มีประวัติ <button class="link" data-go="ask">ถามคำถามแรก →</button></div>`;
+}
+function syncBadge(){$("syncState").textContent=cloud?"☁️ บันทึกไว้ในบัญชีของคุณ เปิดจากเครื่องไหนก็เห็น":"บันทึกไว้ในเครื่องนี้"}
+function renderAll(){renderProfile();renderCoins();daily();renderMerit();stats();renderDash();renderHistory();syncBadge()}
+function stats(){const m=store.get("merit")||{total:0,count:0};
+  const L=meritLevel(m.count),t=m.count?`ดอกบัวแห่งบุญของคุณ: ${L.name}${L.next?` · อีก ${L.need} ครั้งเป็น${L.next}`:""}`:"ยังไม่มีบุญสะสม ทำบุญครั้งแรกเพื่อปลูกเมล็ดบัว";
+  $("meritStat").textContent=t;$("homeMerit").textContent=m.count?t:"เลือกมูลนิธิ สแกน QR ได้ทันที";
+  $("homeMe").textContent=S.birth?personaText():"กรอกวันเกิด เพื่อคำทำนายที่เป็นเรื่องของคุณ";}
+function go(v){
+  if(!VIEWS.includes(v))v="home";
+  document.querySelectorAll(".view").forEach(el=>el.hidden=el.dataset.view!==v);
+  const tv=v==="history"?"home":v;
+  document.querySelectorAll(".tab").forEach(b=>b.dataset.go===tv?b.setAttribute("aria-current","page"):b.removeAttribute("aria-current"));
+  if(v==="home"||v==="merit")stats();
+  if(v==="home")renderDash();
+  if(v==="history")renderHistory();
+  window.scrollTo(0,0);
+  try{history.replaceState(null,"","#"+v)}catch(e){}
+}
+window.addEventListener("hashchange",()=>go(location.hash.slice(1)));
+(async()=>{
+  try{
+    if(!window.claude||!window.claude.use){syncBadge();return}
+    const [db,user]=await Promise.all([window.claude.use("db"),window.claude.use("user")]);
+    if(!db||!user){syncBadge();return}
+    const uid=await user.id();if(!uid){syncBadge();return}
+    const base=`data/users/${uid}/mujai`,main=db.doc(base),hist=db.collection(base+"/history");
+    const snap=await main.get();
+    cloud={main,hist};
+    if(snap.exists){const d=JSON.parse(JSON.stringify(snap.data()||{}));MAIN_KEYS.forEach(k=>{if(d[k]!=null)LS.set(k,d[k])});if(d.state)Object.assign(S,d.state);S.spreads=Object.assign({tarot:"pos",oracle:"o1"},S.spreads||{})}
+    else pushCloud();
+    const hs=await hist.orderBy("t","desc").limit(50).get();
+    if(!hs.empty)HIST=hs.docs.map(x=>x.data()).filter(Boolean).map(x=>JSON.parse(JSON.stringify(x)));
+    else HIST.forEach(e=>hist.doc(e.id).set(e).catch(()=>{}));
+    saveHistLocal();renderAll();
+  }catch(e){cloud=cloud&&cloud.main?cloud:null;syncBadge()}
+})();
+renderAll();go(location.hash.slice(1)||"home");
+})();
+</script>
+</body>
+</html>
